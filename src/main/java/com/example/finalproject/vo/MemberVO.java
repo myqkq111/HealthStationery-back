@@ -1,10 +1,10 @@
-package vo;
+package com.example.finalproject.vo;
 
 import lombok.Data;
 
 import java.time.LocalDateTime;
 import java.util.Date;
-
+// "INSERT INTO users (username, password, enabled) VALUES (#{username}, #{password}, #{enabled})"
 @Data
 public class MemberVO {
     private int id; //회원 고유번호
