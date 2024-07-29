@@ -19,6 +19,5 @@ public class MemberService {
         member.setPassword(encodedPassword);
 //        member.setEnabled(true); 비활성화 토글 기능 보류
         memberMapper.insert(member);
-        memberMapper.insertAuthority(member.getId(), "ROLE_USER");
     }
 }

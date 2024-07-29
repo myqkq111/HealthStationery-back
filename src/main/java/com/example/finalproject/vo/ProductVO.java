@@ -2,19 +2,6 @@ package com.example.finalproject.vo;
 
 import lombok.Data;
 
-<<<<<<< HEAD
-@Data
-public class ProductVO {
-
-    private int id;
-    private String cate;
-    private String name;
-    private int price;
-    private String image;
-    private String content;
-    private String contentImage;
-
-=======
 import java.time.LocalDateTime;
 
 @Data
@@ -32,5 +19,4 @@ public class ProductVO {
     private int view; //조회수
     private int inven; //재고
     private int sale_count; //판매량
->>>>>>> 93488fe10353ac21b140f3e827523fe2fa6a0153
 }
