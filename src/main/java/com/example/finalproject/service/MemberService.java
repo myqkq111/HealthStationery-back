@@ -21,4 +21,8 @@ public class MemberService {
 //        member.setEnabled(true); 비활성화 토글 기능 보류
         memberMapper.insert(member);
     }
+
+    public MemberVO findByEmail(String email) {
+        return memberMapper.findByEmail(email);
+    }
 }
