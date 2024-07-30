@@ -17,8 +17,9 @@ public class MemberService {
     public void signup(MemberVO member) {
 //        String encodedPassword = passwordEncoder.encode(member.getPassword());
 //        member.setPassword(encodedPassword);
+
 //        member.setEnabled(true); 비활성화 토글 기능 보류
-        System.out.println(member);
+
         memberMapper.insert(member);
     }
 }
