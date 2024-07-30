@@ -47,14 +47,31 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(csrf -> csrf.ignoringRequestMatchers("/**")) // CSRF 비활성화
+//                .authorizeHttpRequests(authorizeRequests ->
+//                        authorizeRequests
+//                                .requestMatchers("/admin/**").hasRole("ADMIN")
+//                                .requestMatchers("/**").permitAll()
+//                                .anyRequest().authenticated()
+//                )
+                .cors(cors -> cors.configurationSource(corsConfigurationSource())) // CORS 설정 추가
+                .formLogin(withDefaults())
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
-                                .requestMatchers("/admin/**").hasRole("ADMIN")
-                                .requestMatchers("/**").permitAll()
+                                .requestMatchers("/login**", "/error**").permitAll()
                                 .anyRequest().authenticated()
                 )
-                .cors(cors -> cors.configurationSource(corsConfigurationSource())) // CORS 설정 추가
-                .formLogin(withDefaults());
+                .oauth2Login(oauth2Login ->
+                        oauth2Login
+                                .defaultSuccessUrl("http://localhost:3000", true)
+                                .failureUrl("/login?error=true")
+                )
+                .logout(logout ->
+                        logout
+                                .logoutUrl("/logout")
+                                .logoutSuccessUrl("/login?logout=true")
+                                .permitAll()
+                );
+
 
         return http.build();
     }
