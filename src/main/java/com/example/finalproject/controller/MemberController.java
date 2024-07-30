@@ -17,10 +17,8 @@ public class MemberController {
     public ResponseEntity<?> signup(@RequestBody MemberVO member) {
         try{
             memberService.signup(member);
-//            return ResponseEntity.ok().build();
             return ResponseEntity.ok("User registered successfully");
         } catch (Exception e) {
-            System.out.println("FAILD");
             return ResponseEntity.badRequest().body("User registration failed: " + e.getMessage());
         }
     }
