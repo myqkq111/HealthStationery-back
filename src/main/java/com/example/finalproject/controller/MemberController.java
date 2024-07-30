@@ -4,15 +4,16 @@ import com.example.finalproject.service.MemberService;
 import com.example.finalproject.vo.MemberVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RequestMapping("/member")
 public class MemberController {
+
     @Autowired
     public MemberService memberService;
-    @PostMapping("/member/signup")
+
+    @PostMapping("/signup")
     public ResponseEntity<?> signup(@RequestBody MemberVO member) {
         try{
             memberService.signup(member);
@@ -22,4 +23,5 @@ public class MemberController {
             return ResponseEntity.badRequest().body("User registration failed: " + e.getMessage());
         }
     }
+
 }
