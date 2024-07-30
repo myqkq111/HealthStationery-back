@@ -19,6 +19,7 @@ public class MemberController {
 //            return ResponseEntity.ok().build();
             return ResponseEntity.ok("User registered successfully");
         } catch (Exception e) {
+            System.out.println("FAILD");
             return ResponseEntity.badRequest().body("User registration failed: " + e.getMessage());
         }
     }
