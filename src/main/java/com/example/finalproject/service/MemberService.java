@@ -15,8 +15,10 @@ public class MemberService {
     public MemberMapper memberMapper;
 
     public void signup(MemberVO member) {
-        String encodedPassword = passwordEncoder.encode(member.getPassword());
-        member.setPassword(encodedPassword);
+//        String encodedPassword = passwordEncoder.encode(member.getPassword());
+//        member.setPassword(encodedPassword);
+        System.out.println(member);
+
 //        member.setEnabled(true); 비활성화 토글 기능 보류
         memberMapper.insert(member);
     }
