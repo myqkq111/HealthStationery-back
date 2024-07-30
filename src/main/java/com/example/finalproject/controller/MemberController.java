@@ -16,10 +16,25 @@ public class MemberController {
     @PostMapping("/signup")
     public ResponseEntity<?> signup(@RequestBody MemberVO member) {
         try{
+//            if(memberService.findByEmail(member.getEmail())!=null){
+//                return ResponseEntity.badRequest().body("존재하는 아이디 입니다.");
+//            }
             memberService.signup(member);
             return ResponseEntity.ok("User registered successfully");
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("User registration failed: " + e.getMessage());
+        }
+    }
+
+    @PostMapping("/findPW")
+    public ResponseEntity<?> findByEmail(@RequestBody String email) {
+        try{
+            if(memberService.findByEmail(email)==null){
+                return ResponseEntity.badRequest().body(0);
+            }
+            return ResponseEntity.ok(1);
+        }catch (Exception e) {
+            return ResponseEntity.badRequest().body("User email search failed: " + e.getMessage());
         }
     }
 
