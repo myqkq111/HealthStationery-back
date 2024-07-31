@@ -15,15 +15,12 @@ public class MemberController {
 
     @PostMapping("/signup")
     public ResponseEntity<?> signup(@RequestBody MemberVO member) {
-        System.out.println("여기는");
         try{
-//            if(memberService.findByEmail(member.getEmail())!=null){
-//                return ResponseEntity.badRequest().body("존재하는 아이디 입니다.");
-//            }
-            System.out.println("1111111111111111111111");
-            System.out.println(member.getBirth());
+            if(memberService.findByEmail(member.getEmail())!=null){
+                return ResponseEntity.ok(1);
+            }
             memberService.signup(member);
-            return ResponseEntity.ok("User registered successfully");
+            return ResponseEntity.ok(2);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("User registration failed: " + e.getMessage());
         }
@@ -33,7 +30,7 @@ public class MemberController {
     public ResponseEntity<?> findByEmail(@RequestBody String email) {
         try{
             if(memberService.findByEmail(email)==null){
-                return ResponseEntity.badRequest().body(0);
+                return ResponseEntity.ok(2);
             }
             return ResponseEntity.ok(1);
         }catch (Exception e) {
