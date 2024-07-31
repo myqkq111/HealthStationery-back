@@ -69,6 +69,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorizeRequests -> //네이버 OAuth
                         authorizeRequests
                                 .requestMatchers("/login**", "/error**").permitAll() // 로그인 관련 경로는 모든 사용자에게 허용
+                                .requestMatchers("/admin/**").hasRole("ADMIN")
+                                .requestMatchers("/**").permitAll() //모든 URL 패턴에 대해 접근
                                 .anyRequest().authenticated() // 다른 모든 요청은 인증된 사용자만 접근 가능
                 )
                 .oauth2Login(oauth2Login ->
