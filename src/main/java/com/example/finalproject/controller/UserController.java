@@ -1,5 +1,8 @@
 package com.example.finalproject.controller;
 
+import com.example.finalproject.service.OAuthService;
+import com.example.finalproject.vo.MemberVO;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
@@ -8,12 +11,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.view.RedirectView;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 @Controller
 @RequestMapping("/user")
 public class UserController {
+
+    @Autowired
+    OAuthService oAuthService;
 
     @GetMapping("/info")
     public String userInfo(@AuthenticationPrincipal OAuth2User principal) {
@@ -25,25 +34,33 @@ public class UserController {
             if (response instanceof Map) {
                 Map<String, String> responseMap = (Map<String, String>) response;
 
-                String id = responseMap.get("id");
+//                String id = responseMap.get("id");
                 String gender = responseMap.get("gender");
                 String email = responseMap.get("email");
                 String mobile = responseMap.get("mobile"); //010-7531-0153
-                String mobile_e164 = responseMap.get("mobile_e164"); //+821075310153
                 String name = responseMap.get("name");
-                String birthday = responseMap.get("birthday");
-                String birthyear = responseMap.get("birthyear");
+                String birth = responseMap.get("birthyear") + "-" + responseMap.get("birthday");
 
-                System.out.println(id);
-                System.out.println(gender);
-                System.out.println(email);
-                System.out.println(mobile);
-                System.out.println(mobile_e164);
-                System.out.println(name);
-                System.out.println("잘됌");
+                // 날짜 형식 지정
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                Date date;
+                try {
+                    // 문자열을 Date 객체로 변환
+                    date = dateFormat.parse(birth);
+
+                } catch (ParseException e) {
+                    throw new RuntimeException(e);
+                }
+
+                MemberVO member = new MemberVO();
+                member.setFm(gender);
+                member.setEmail(email);
+                member.setTell(mobile);
+                member.setName(name);
+                member.setBirth(date);
+
+                oAuthService.oAuthSingUp(member);
             }
-
-
         }
         return "redirect:http://localhost:3000";
     }

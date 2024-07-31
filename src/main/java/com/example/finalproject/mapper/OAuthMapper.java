@@ -7,7 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface OAuthMapper {
 
-    @Insert("INSERT INTO (cate, email, password, name, fm, tell, birth) VALUES ('naver', #{email}, #{password}, #{name}, #{fm}, #{tell}, #{birth})")
+    @Insert("INSERT INTO member(cate, email, name, fm, tell, birth) VALUES ('naver', #{email}, #{name}, #{fm}, #{tell}, #{birth})")
     public void oAuthSingUp(MemberVO member);
 
 }
