@@ -1,5 +1,8 @@
 package com.example.finalproject.config;
 
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import com.example.finalproject.jwt.JwtAuthenticationFilter;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -10,6 +13,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -25,10 +29,13 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -90,13 +97,13 @@ public class SecurityConfig {
                 )
                 .oauth2Login(oauth2Login ->
                         oauth2Login
-//                                .userInfoEndpoint(userInfoEndpoint ->
-//                                        userInfoEndpoint
-//                                                .userService(oauth2UserService()) // 사용자 정보 서비스 설정
-//                                )
-//                                .successHandler(authenticationSuccessHandler())
+                                .userInfoEndpoint(userInfoEndpoint ->
+                                        userInfoEndpoint
+                                                .userService(oauth2UserService()) // 사용자 정보 서비스 설정
+                                )
+                                .successHandler(customAuthenticationSuccessHandler())
 //                                .defaultSuccessUrl("http://localhost:3000", true)
-                                .defaultSuccessUrl("/user/info", true)
+//                                .defaultSuccessUrl("/oauth/naver", true)
                                 .failureUrl("/login?error=true") // 로그인 실패 시 이동할 URL
                 )
                 .logout(logout ->
@@ -161,4 +168,46 @@ public class SecurityConfig {
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }
+
+    @Bean
+    public OAuth2UserService<OAuth2UserRequest, OAuth2User> oauth2UserService() {
+        return new DefaultOAuth2UserService() {
+            @Override
+            public OAuth2User loadUser(OAuth2UserRequest userRequest) {
+                OAuth2User oAuth2User = super.loadUser(userRequest);
+
+                // 세션에 registrationId 저장
+                HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+                request.getSession().setAttribute("registrationId", userRequest.getClientRegistration().getRegistrationId());
+
+                return oAuth2User;
+            }
+        };
+    }
+
+    @Bean
+    public AuthenticationSuccessHandler customAuthenticationSuccessHandler() {
+        return new AuthenticationSuccessHandler() {
+            @Override
+            public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
+                                                Authentication authentication) throws IOException, ServletException {
+                String registrationId = (String) request.getSession().getAttribute("registrationId");
+                System.out.println("Registration ID: " + registrationId); // 로그 확인
+                String targetUrl = "/default";
+                if ("kakao".equals(registrationId)) {
+                    targetUrl = "/oauth/kakao";
+                } else if ("naver".equals(registrationId)) {
+                    targetUrl = "/oauth/naver";
+                }
+
+                response.sendRedirect(targetUrl);
+            }
+        };
+    }
+
+//    @Bean
+//    public AuthenticationSuccessHandler customAuthenticationSuccessHandler() {
+//        return new CustomAuthenticationSuccessHandler();
+//    }
+
 }

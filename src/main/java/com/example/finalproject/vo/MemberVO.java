@@ -20,4 +20,5 @@ public class MemberVO {
     private String detailaddr; //상세주소
     private LocalDateTime regdt; //가입일
     private String member_type; //유저 구분 (admin or user)
+    private long kakaoId; //카카오 로그인 고유id
 }

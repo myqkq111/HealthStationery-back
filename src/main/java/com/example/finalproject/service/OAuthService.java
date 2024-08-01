@@ -11,8 +11,21 @@ public class OAuthService {
     @Autowired
     public OAuthMapper oAuthMapper;
 
-    public void oAuthSingUp(MemberVO member){
-        oAuthMapper.oAuthSingUp(member);
+    public MemberVO naverEmailSelect(String email){
+        return oAuthMapper.naverEmailSelect(email);
+    }
+
+    public void naverSingUp(MemberVO member){
+        oAuthMapper.naverSingUp(member);
+    }
+
+
+    public MemberVO kakaoIdSelect(long kakaoId){
+        return oAuthMapper.kakaoIdSelect(kakaoId);
+    }
+
+    public void kakaoSingUp(MemberVO member){
+        oAuthMapper.kakaoSingUp(member);
     }
 
 }
