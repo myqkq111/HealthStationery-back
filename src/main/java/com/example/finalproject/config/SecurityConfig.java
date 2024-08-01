@@ -3,6 +3,12 @@ package com.example.finalproject.config;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import com.example.finalproject.jwt.JwtAuthenticationFilter;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -40,6 +46,19 @@ import static org.springframework.security.config.Customizer.withDefaults;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+    @Bean
+    public JwtAuthenticationFilter jwtAuthenticationFilter() {
+        return new JwtAuthenticationFilter();
+    }
+
+    private final CustomExceptionHandler customExceptionHandler;
+    public SecurityConfig(CustomExceptionHandler customExceptionHandler) {
+        this.customExceptionHandler = customExceptionHandler;
+    }
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+        return authenticationConfiguration.getAuthenticationManager();
+    }
 
     @Bean
     public UserDetailsService userDetailsService() {
@@ -64,19 +83,15 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
+                .csrf(AbstractHttpConfigurer::disable) // CSRF 보호 비활성화
                 .csrf(csrf -> csrf.ignoringRequestMatchers("/**")) // CSRF 비활성화
-//                .authorizeHttpRequests(authorizeRequests ->
-//                        authorizeRequests
-//                                .requestMatchers("/admin/**").hasRole("ADMIN")
-//                                .requestMatchers("/**").permitAll()
-//                                .anyRequest().authenticated()
-//                )
                 .cors(cors -> cors.configurationSource(corsConfigurationSource())) // CORS 설정 추가
                 .formLogin(withDefaults())
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
-//                                .requestMatchers("/login**", "/error**").permitAll() // 로그인 관련 경로는 모든 사용자에게 허용
-//                                .requestMatchers("/admin/**").hasRole("ADMIN")
+                                .requestMatchers("/api/auth/login").permitAll()
+                                .requestMatchers("/login**", "/error**").permitAll() // 로그인 관련 경로는 모든 사용자에게 허용
+                                .requestMatchers("/admin/**").hasRole("ADMIN")
                                 .requestMatchers("/**").permitAll() //모든 URL 패턴에 대해 접근
                                 .anyRequest().authenticated() // 다른 모든 요청은 인증된 사용자만 접근 가능
                 )
@@ -96,6 +111,12 @@ public class SecurityConfig {
                                 .logoutUrl("/logout")
                                 .logoutSuccessUrl("/login?logout=true")
                                 .permitAll()
+                )
+                .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
+                .exceptionHandling(exceptionHandling ->
+                        exceptionHandling
+                                .authenticationEntryPoint(customExceptionHandler)
+                                .accessDeniedHandler(customExceptionHandler)
                 );
 
 
