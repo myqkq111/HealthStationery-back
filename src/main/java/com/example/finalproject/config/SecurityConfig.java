@@ -1,9 +1,11 @@
 package com.example.finalproject.config;
 
+//import com.example.finalproject.service.CustomUserDetailsService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import com.example.finalproject.jwt.JwtAuthenticationFilter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -45,7 +47,12 @@ import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
 @EnableWebSecurity
-public class SecurityConfig {
+public class SecurityConfig{
+
+//    @Autowired
+//    private CustomUserDetailsService userDetailsService;
+
+
     @Bean
     public JwtAuthenticationFilter jwtAuthenticationFilter() {
         return new JwtAuthenticationFilter();
@@ -60,38 +67,43 @@ public class SecurityConfig {
         return authenticationConfiguration.getAuthenticationManager();
     }
 
-    @Bean
-    public UserDetailsService userDetailsService() {
-        UserDetails admin = User.withDefaultPasswordEncoder()
-                .username("admin")
-                .password("admin123")
-                .roles("ADMIN")
-                .build();
-        UserDetails user = User.withDefaultPasswordEncoder()
-                .username("user")
-                .password("user123")
-                .roles("USER")
-                .build();
-        UserDetails test = User.withDefaultPasswordEncoder()
-                .username("test")
-                .password("test")
-                .roles("ADMIN")
-                .build();
-        return new InMemoryUserDetailsManager(admin, user, test);
-    }
+//    @Bean
+//    public UserDetailsService userDetailsService() {
+//        UserDetails admin = User.withDefaultPasswordEncoder()
+//                .username("admin")
+//                .password("admin123")
+//                .roles("ADMIN")
+//                .build();
+//        UserDetails user = User.withDefaultPasswordEncoder()
+//                .username("user")
+//                .password("user123")
+//                .roles("USER")
+//                .build();
+//        UserDetails test = User.withDefaultPasswordEncoder()
+//                .username("test")
+//                .password("test")
+//                .roles("ADMIN")
+//                .build();
+//        return new InMemoryUserDetailsManager(admin, user, test);
+//    }
+//    @Bean
+//    public UserDetailsService userDetailsService() {
+//        return new CustomUserDetailsService(); // UserDetailsService의 구현체를 반환
+//    }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable) // CSRF 보호 비활성화
-                .csrf(csrf -> csrf.ignoringRequestMatchers("/**")) // CSRF 비활성화
+//                .csrf(csrf -> csrf.ignoringRequestMatchers("/**")) // CSRF 비활성화
+//                .csrf(csrf -> csrf.disable())
                 .cors(cors -> cors.configurationSource(corsConfigurationSource())) // CORS 설정 추가
                 .formLogin(withDefaults())
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
-                                .requestMatchers("/api/auth/login").permitAll()
-                                .requestMatchers("/login**", "/error**").permitAll() // 로그인 관련 경로는 모든 사용자에게 허용
-                                .requestMatchers("/admin/**").hasRole("ADMIN")
+//                                .requestMatchers("/api/auth/login").permitAll()
+//                                .requestMatchers("/member**", "/error**").permitAll() // 로그인 관련 경로는 모든 사용자에게 허용
+//                                .requestMatchers("/admin/**").hasRole("ADMIN")
                                 .requestMatchers("/**").permitAll() //모든 URL 패턴에 대해 접근
                                 .anyRequest().authenticated() // 다른 모든 요청은 인증된 사용자만 접근 가능
                 )
