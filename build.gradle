@@ -42,6 +42,7 @@ dependencies {
 	implementation 'org.springframework.security:spring-security-oauth2-client'
 	implementation 'org.springframework.security:spring-security-oauth2-core'
 	implementation 'org.springframework.security:spring-security-oauth2-jose'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 
 	// JWT dependencies
 	implementation 'io.jsonwebtoken:jjwt-api:0.11.2'
