@@ -8,24 +8,21 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.view.RedirectView;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
 
 @Controller
-@RequestMapping("/user")
-public class UserController {
+@RequestMapping("/oauth")
+public class OAuthController {
 
     @Autowired
     OAuthService oAuthService;
 
-    @GetMapping("/info")
-    public String userInfo(@AuthenticationPrincipal OAuth2User principal) {
+    @GetMapping("/naver")
+    public String naver(@AuthenticationPrincipal OAuth2User principal) {
         if (principal != null) {
             // 네이버 사용자 정보 가져오기
             Map<String, Object> attributes = principal.getAttributes();
@@ -59,7 +56,29 @@ public class UserController {
                 member.setName(name);
                 member.setBirth(date);
 
-                oAuthService.oAuthSingUp(member);
+                MemberVO select = oAuthService.naverEmailSelect(email);
+                if(select == null){
+                    oAuthService.naverSingUp(member);
+                }
+            }
+        }
+        return "redirect:http://localhost:3000";
+    }
+
+    @GetMapping("/kakao")
+    public String kakao(@AuthenticationPrincipal OAuth2User principal) {
+        if (principal != null) {
+            // 네이버 사용자 정보 가져오기
+            Map<String, Object> attributes = principal.getAttributes();
+
+            Long kakaoId = (Long) attributes.get("id");
+            String name = ((Map<String, String>)attributes.get("properties")).get("nickname");
+            MemberVO member = new MemberVO();
+            member.setKakaoId(kakaoId);
+            member.setName(name);
+            MemberVO select = oAuthService.kakaoIdSelect(kakaoId);
+            if(select == null){
+                oAuthService.kakaoSingUp(member);
             }
         }
         return "redirect:http://localhost:3000";

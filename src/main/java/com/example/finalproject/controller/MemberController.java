@@ -15,13 +15,10 @@ public class MemberController {
 
     @PostMapping("/signup")
     public ResponseEntity<?> signup(@RequestBody MemberVO member) {
-        System.out.println("여기는");
         try{
 //            if(memberService.findByEmail(member.getEmail())!=null){
 //                return ResponseEntity.badRequest().body("존재하는 아이디 입니다.");
 //            }
-            System.out.println("1111111111111111111111");
-            System.out.println(member.getBirth());
             memberService.signup(member);
             return ResponseEntity.ok("User registered successfully");
         } catch (Exception e) {
