@@ -49,10 +49,6 @@ import static org.springframework.security.config.Customizer.withDefaults;
 @EnableWebSecurity
 public class SecurityConfig{
 
-//    @Autowired
-//    private CustomUserDetailsService userDetailsService;
-
-
     @Bean
     public JwtAuthenticationFilter jwtAuthenticationFilter() {
         return new JwtAuthenticationFilter();
@@ -67,43 +63,14 @@ public class SecurityConfig{
         return authenticationConfiguration.getAuthenticationManager();
     }
 
-//    @Bean
-//    public UserDetailsService userDetailsService() {
-//        UserDetails admin = User.withDefaultPasswordEncoder()
-//                .username("admin")
-//                .password("admin123")
-//                .roles("ADMIN")
-//                .build();
-//        UserDetails user = User.withDefaultPasswordEncoder()
-//                .username("user")
-//                .password("user123")
-//                .roles("USER")
-//                .build();
-//        UserDetails test = User.withDefaultPasswordEncoder()
-//                .username("test")
-//                .password("test")
-//                .roles("ADMIN")
-//                .build();
-//        return new InMemoryUserDetailsManager(admin, user, test);
-//    }
-//    @Bean
-//    public UserDetailsService userDetailsService() {
-//        return new CustomUserDetailsService(); // UserDetailsService의 구현체를 반환
-//    }
-
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable) // CSRF 보호 비활성화
-//                .csrf(csrf -> csrf.ignoringRequestMatchers("/**")) // CSRF 비활성화
-//                .csrf(csrf -> csrf.disable())
                 .cors(cors -> cors.configurationSource(corsConfigurationSource())) // CORS 설정 추가
                 .formLogin(withDefaults())
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
-//                                .requestMatchers("/api/auth/login").permitAll()
-//                                .requestMatchers("/member**", "/error**").permitAll() // 로그인 관련 경로는 모든 사용자에게 허용
-//                                .requestMatchers("/admin/**").hasRole("ADMIN")
                                 .requestMatchers("/**").permitAll() //모든 URL 패턴에 대해 접근
                                 .anyRequest().authenticated() // 다른 모든 요청은 인증된 사용자만 접근 가능
                 )
@@ -114,8 +81,6 @@ public class SecurityConfig{
                                                 .userService(oauth2UserService()) // 사용자 정보 서비스 설정
                                 )
                                 .successHandler(customAuthenticationSuccessHandler())
-//                                .defaultSuccessUrl("http://localhost:3000", true)
-//                                .defaultSuccessUrl("/oauth/naver", true)
                                 .failureUrl("/login?error=true") // 로그인 실패 시 이동할 URL
                 )
                 .logout(logout ->
@@ -134,34 +99,6 @@ public class SecurityConfig{
 
         return http.build();
     }
-
-//    @Bean
-//    public OAuth2UserService<OAuth2UserRequest, OAuth2User> oauth2UserService() {
-//        return new DefaultOAuth2UserService() {
-//            @Override
-//            public OAuth2User loadUser(OAuth2UserRequest userRequest) {
-//                OAuth2User oAuth2User = super.loadUser(userRequest);
-//                // 사용자 정보를 변환하거나 추가 처리할 수 있습니다.
-//                Map<String, Object> attributes = new HashMap<>(oAuth2User.getAttributes());
-////                String id = (String) attributes.get("id");
-////                String name = (String) attributes.get("name");
-////                String email = (String) attributes.get("email");
-////
-////                // 예를 들어 네이버에서 사용자 정보를 가져오는 방법을 설정합니다.
-////                attributes.put("id", id);
-////                attributes.put("name", name);
-////                attributes.put("email", email);
-//                return oAuth2User;
-//            }
-//        };
-//    }
-
-//    @Bean
-//    public AuthenticationSuccessHandler authenticationSuccessHandler() {
-//        SimpleUrlAuthenticationSuccessHandler successHandler = new SimpleUrlAuthenticationSuccessHandler("http://localhost:3000/home");
-//        successHandler.setUseReferer(true);
-//        return successHandler;
-//    }
 
     @Bean
     PasswordEncoder passwordEncoder() {
@@ -216,10 +153,4 @@ public class SecurityConfig{
             }
         };
     }
-
-//    @Bean
-//    public AuthenticationSuccessHandler customAuthenticationSuccessHandler() {
-//        return new CustomAuthenticationSuccessHandler();
-//    }
-
 }

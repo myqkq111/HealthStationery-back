@@ -68,12 +68,11 @@ public class MemberController {
 
     @PostMapping("/login")
     public ResponseEntity<?> createAuthenticationToken(@RequestBody MemberVO member) throws Exception {
-        member.setUsername(member.getEmail());
         try {
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(member.getEmail(), member.getPassword())
             );
-            final UserDetails userDetails = userDetailsService.loadUserByUsername(member.getUsername());
+            final UserDetails userDetails = userDetailsService.loadUserByUsername(member.getEmail());
             final String jwt = jwtUtil.generateToken(userDetails.getUsername());
             return ResponseEntity.ok(new AuthResponseVO(jwt,memberService.findByEmail(jwtUtil.extractUsername(jwt))));
 

@@ -20,8 +20,8 @@ public class OAuthService {
     }
 
 
-    public MemberVO kakaoIdSelect(long kakaoId){
-        return oAuthMapper.kakaoIdSelect(kakaoId);
+    public MemberVO kakaoEmailSelect(String email){
+        return oAuthMapper.kakaoEmailSelect(email);
     }
 
     public void kakaoSingUp(MemberVO member){
