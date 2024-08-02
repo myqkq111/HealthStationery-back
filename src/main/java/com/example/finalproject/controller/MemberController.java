@@ -35,15 +35,24 @@ public class MemberController {
     @PostMapping("/signup")
     public ResponseEntity<?> signup(@RequestBody MemberVO member) {
         try{
-            if(memberService.findByEmail(member.getEmail())!=null){
-                return ResponseEntity.ok(1);
-            }
             memberService.signup(member);
             return ResponseEntity.ok(2);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("User registration failed: " + e.getMessage());
         }
     }
+    @PostMapping("/checkEmail")
+    public ResponseEntity<?> checkEmail(@RequestBody String email) {
+        try{
+            if(memberService.findByEmail(email)!=null)
+                return ResponseEntity.ok(1);
+            else
+                return ResponseEntity.ok(0);
+        }catch(Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
 
     @PostMapping("/findPW")
     public ResponseEntity<?> findByEmail(@RequestBody String email) {
@@ -68,7 +77,7 @@ public class MemberController {
             System.out.println("2");
             final UserDetails userDetails = userDetailsService.loadUserByUsername(member.getUsername());
             final String jwt = jwtUtil.generateToken(userDetails.getUsername());
-
+            System.out.println(userDetails.getUsername());
             return ResponseEntity.ok(new AuthResponseVO(jwt));
 
         } catch (AuthenticationException e) {
