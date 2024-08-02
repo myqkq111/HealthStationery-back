@@ -57,10 +57,10 @@ public class MemberController {
     @PostMapping("/findPW")
     public ResponseEntity<?> findByEmail(@RequestBody String email) {
         try{
-            if(memberService.findByEmail(email)==null){
-                return ResponseEntity.ok(2);
+            if(memberService.findByEmail(email)!=null){
+                return ResponseEntity.ok(1);
             }
-            return ResponseEntity.ok(1);
+            return ResponseEntity.ok(0);
         }catch (Exception e) {
             return ResponseEntity.badRequest().body("User email search failed: " + e.getMessage());
         }
@@ -69,16 +69,13 @@ public class MemberController {
     @PostMapping("/login")
     public ResponseEntity<?> createAuthenticationToken(@RequestBody MemberVO member) throws Exception {
         member.setUsername(member.getEmail());
-        System.out.println("1");
         try {
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(member.getEmail(), member.getPassword())
             );
-            System.out.println("2");
             final UserDetails userDetails = userDetailsService.loadUserByUsername(member.getUsername());
             final String jwt = jwtUtil.generateToken(userDetails.getUsername());
-            System.out.println(userDetails.getUsername());
-            return ResponseEntity.ok(new AuthResponseVO(jwt));
+            return ResponseEntity.ok(new AuthResponseVO(jwt,memberService.findByEmail(jwtUtil.extractUsername(jwt))));
 
         } catch (AuthenticationException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponseVO("Incorrect username or password"));
