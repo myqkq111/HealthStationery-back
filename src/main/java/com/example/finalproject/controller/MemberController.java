@@ -35,23 +35,32 @@ public class MemberController {
     @PostMapping("/signup")
     public ResponseEntity<?> signup(@RequestBody MemberVO member) {
         try{
-            if(memberService.findByEmail(member.getEmail())!=null){
-                return ResponseEntity.ok(1);
-            }
             memberService.signup(member);
             return ResponseEntity.ok(2);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("User registration failed: " + e.getMessage());
         }
     }
+    @PostMapping("/checkEmail")
+    public ResponseEntity<?> checkEmail(@RequestBody String email) {
+        try{
+            if(memberService.findByEmail(email)!=null)
+                return ResponseEntity.ok(1);
+            else
+                return ResponseEntity.ok(0);
+        }catch(Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
 
     @PostMapping("/findPW")
     public ResponseEntity<?> findByEmail(@RequestBody String email) {
         try{
-            if(memberService.findByEmail(email)==null){
-                return ResponseEntity.ok(2);
+            if(memberService.findByEmail(email)!=null){
+                return ResponseEntity.ok(1);
             }
-            return ResponseEntity.ok(1);
+            return ResponseEntity.ok(0);
         }catch (Exception e) {
             return ResponseEntity.badRequest().body("User email search failed: " + e.getMessage());
         }
@@ -65,8 +74,7 @@ public class MemberController {
             );
             final UserDetails userDetails = userDetailsService.loadUserByUsername(member.getEmail());
             final String jwt = jwtUtil.generateToken(userDetails.getUsername());
-
-            return ResponseEntity.ok(new AuthResponseVO(jwt));
+            return ResponseEntity.ok(new AuthResponseVO(jwt,memberService.findByEmail(jwtUtil.extractUsername(jwt))));
 
         } catch (AuthenticationException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponseVO("Incorrect username or password"));
