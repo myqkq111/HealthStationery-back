@@ -21,5 +21,4 @@ public class MemberVO {
     private LocalDateTime regdt; //가입일
     private String member_type; //유저 구분 (admin or user)
     private long kakaoId; //카카오 로그인 고유id
-    private String username;
 }
