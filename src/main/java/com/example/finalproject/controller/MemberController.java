@@ -16,6 +16,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @RestController
 @RequestMapping("/member")
 public class MemberController {
@@ -79,6 +82,33 @@ public class MemberController {
         } catch (AuthenticationException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponseVO("Incorrect username or password"));
         }
+    }
+
+    //토큰 유효성 검사
+    @GetMapping("/validate-token")
+    public Map<String, Object> validateToken(@RequestHeader("Authorization") String authorizationHeader) {
+        Map<String, Object> response = new HashMap<>();
+        String jwtToken = null;
+        String username = null;
+
+        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
+            jwtToken = authorizationHeader.substring(7); // "Bearer " 제거
+            try {
+                username = jwtUtil.extractUsername(jwtToken);
+                if (username != null && jwtUtil.validateToken(jwtToken, username)) {
+                    // JWT 유효한 경우 사용자 정보를 반환합니다.
+                    response.put("valid", true);
+                    response.put("username", username);
+                } else {
+                    response.put("valid", false);
+                }
+            } catch (Exception e) {
+                response.put("valid", false);
+            }
+        } else {
+            response.put("valid", false);
+        }
+        return response;
     }
 
 }
