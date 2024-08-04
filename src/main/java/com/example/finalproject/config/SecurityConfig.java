@@ -1,46 +1,37 @@
 package com.example.finalproject.config;
 
-//import com.example.finalproject.service.CustomUserDetailsService;
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import com.example.finalproject.jwt.JwtAuthenticationFilter;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
-import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.oauth2.core.user.OAuth2User;
-import org.springframework.security.oauth2.core.user.OAuth2UserAuthority;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
-import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 
 import static org.springframework.security.config.Customizer.withDefaults;
@@ -140,15 +131,42 @@ public class SecurityConfig{
             @Override
             public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
                                                 Authentication authentication) throws IOException, ServletException {
+                // 사용자 인증 성공 후, 인증된 사용자 정보를 가져옵니다.
                 String registrationId = (String) request.getSession().getAttribute("registrationId");
-                System.out.println("Registration ID: " + registrationId); // 로그 확인
+                Map<String, Object> attributes = ((OAuth2User) authentication.getPrincipal()).getAttributes();
                 String targetUrl = "/default";
                 if ("kakao".equals(registrationId)) {
-                    targetUrl = "/oauth/kakao";
-                } else if ("naver".equals(registrationId)) {
-                    targetUrl = "/oauth/naver";
-                }
+                    //한글이 있을 시 오류가 나기 때문에 인코딩 작업 해줘야 함
+                    String email = ((Map<String, String>)attributes.get("kakao_account")).get("email");
+                    String name = ((Map<String, String>)attributes.get("properties")).get("nickname");
+                    String encodedEmail = URLEncoder.encode(email, StandardCharsets.UTF_8.toString());
+                    String encodedName = URLEncoder.encode(name, StandardCharsets.UTF_8.toString());
+                    targetUrl = "http://localhost:3000/oauth?cate=kakao&email=" + encodedEmail + "&name=" + encodedName;
 
+                } else if ("naver".equals(registrationId)) {
+                    Object user = attributes.get("response");
+                    if (user instanceof Map) {
+                        try {
+                            Map<String, String> userMap = (Map<String, String>) user;
+                            String email = userMap.get("email");
+                            String name = userMap.get("name");
+                            String encodedEmail = URLEncoder.encode(email, StandardCharsets.UTF_8.toString());
+                            String encodedName = URLEncoder.encode(name, StandardCharsets.UTF_8.toString());
+                            targetUrl = "http://localhost:3000/oauth?cate=naver&email=" + encodedEmail + "&name=" + encodedName;
+                        } catch (UnsupportedEncodingException e) {
+//                        // 인코딩 실패 시 예외 처리
+//                        e.printStackTrace();
+//                        redirectUrl = "http://localhost:3000/terms";
+                    }
+                    }
+                } else if ("google".equals(registrationId)) {
+                    String email = (String)attributes.get("email");
+                    String name = (String)attributes.get("name");
+                    String encodedEmail = URLEncoder.encode(email, StandardCharsets.UTF_8.toString());
+                    String encodedName = URLEncoder.encode(name, StandardCharsets.UTF_8.toString());
+                    targetUrl = "http://localhost:3000/oauth?cate=google&email=" + encodedEmail + "&name=" + encodedName;
+                }
+                // 클라이언트 애플리케이션으로 리디렉션합니다.
                 response.sendRedirect(targetUrl);
             }
         };

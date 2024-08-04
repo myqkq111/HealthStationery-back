@@ -21,9 +21,17 @@ public class CustomUserDetailsService implements UserDetailsService {
         if (member == null) {
             throw new UsernameNotFoundException("User not found with email: " + email);
         }
-        return User.withUsername(member.getEmail())
-                .password(member.getPassword())
+        String password = member.getPassword();
+        if(password == null){
+            return User.withUsername(member.getEmail())
+                    .password("")
 //                .roles(member.getMember_type()) // 'admin', 'user' 등으로 설정
-                .build();
+                    .build();
+        } else {
+            return User.withUsername(member.getEmail())
+                    .password(member.getPassword())
+//                .roles(member.getMember_type()) // 'admin', 'user' 등으로 설정
+                    .build();
+        }
     }
 }
