@@ -111,4 +111,15 @@ public class MemberController {
         return response;
     }
 
+    @DeleteMapping("/deleteAccount")
+    public ResponseEntity<String> deleteAccount(@RequestHeader("Authorization") String token, @RequestBody MemberVO member) {
+        try {
+            String email = jwtUtil.extractUsername(token.replace("Bearer ", ""));
+            memberService.deleteMember(email,member.getCate());
+            return ResponseEntity.ok("회원탈퇴가 완료되었습니다.");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("회원탈퇴에 실패했습니다.");
+        }
+    }
 }
