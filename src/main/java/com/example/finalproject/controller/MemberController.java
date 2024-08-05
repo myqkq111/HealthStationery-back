@@ -14,6 +14,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -34,6 +35,9 @@ public class MemberController {
 
     @Autowired
     private UserDetailsService userDetailsService;
+
+    @Autowired
+    public PasswordEncoder passwordEncoder;
 
     @PostMapping("/signup")
     public ResponseEntity<?> signup(@RequestBody MemberVO member) {
@@ -120,6 +124,19 @@ public class MemberController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("회원탈퇴에 실패했습니다.");
+        }
+    }
+    @PostMapping("/confirmPassword")
+    public ResponseEntity<?> confirmPassword(@RequestBody MemberVO member) {
+        try{
+            String pw = memberService.confirmPassword(member.getEmail(), member.getCate());
+            if (passwordEncoder.matches(member.getPassword(),pw)) {
+                return ResponseEntity.ok(1);
+            }
+            return ResponseEntity.ok(0);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("비밀번호 불일치");
         }
     }
 }

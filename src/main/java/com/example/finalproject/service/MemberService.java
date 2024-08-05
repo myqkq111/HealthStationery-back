@@ -31,12 +31,14 @@ public class MemberService {
             memberMapper.insert(member);
         }
     }
-
     public MemberVO findByEmail(String email) {
         return memberMapper.findByEmail(email);
     }
 
     public void deleteMember(String email, String cate){
         memberMapper.deleteMember(email,cate);
+    }
+    public String confirmPassword(String email, String cate) {
+        return memberMapper.confirmPassword(email, cate);
     }
 }
