@@ -35,4 +35,8 @@ public class MemberService {
     public MemberVO findByEmail(String email) {
         return memberMapper.findByEmail(email);
     }
+
+    public void deleteMember(String email, String cate){
+        memberMapper.deleteMember(email,cate);
+    }
 }

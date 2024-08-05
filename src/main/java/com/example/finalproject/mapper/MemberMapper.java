@@ -1,10 +1,7 @@
 package com.example.finalproject.mapper;
 
 import com.example.finalproject.vo.MemberVO;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Options;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 @Mapper
 public interface MemberMapper {
@@ -18,4 +15,8 @@ public interface MemberMapper {
     // 이메일 유효성 검사
     @Select("SELECT * FROM member WHERE email = #{email}")
     MemberVO findByEmail(String email);
+
+    // 회원 탈퇴
+    @Delete("DELETE FROM member WHERE email = #{email} AND cate = #{cate}")
+    void deleteMember(String email, String cate);
 }
