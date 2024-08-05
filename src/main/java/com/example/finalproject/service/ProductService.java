@@ -26,5 +26,11 @@ public class ProductService {
         productMapper.insertOption(product.getId(), strOptionName, strOptionValue);
     }
 
+    public List<ProductVO> selectAll(){
+        return productMapper.selectAll();
+    }
+
+
+
 
 }

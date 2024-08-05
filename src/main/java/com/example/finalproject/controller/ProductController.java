@@ -21,13 +21,20 @@ public class ProductController {
                                            @RequestParam List<String> optionName,
                                            @RequestParam List<String> optionValue) {
         try{
-            System.out.println(optionName);
-            System.out.println(optionValue);
             productService.insert(product, optionName, optionValue);
             return ResponseEntity.ok(1);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("User registration failed: " + e.getMessage());
         }
+    }
+
+    @GetMapping("/selectAll")
+    public ResponseEntity<?> selectAll() {
+        System.out.println("1");
+        List<ProductVO> list = productService.selectAll();
+        System.out.println("2");
+        System.out.println(list);
+        return ResponseEntity.ok(list);
     }
 
 }
