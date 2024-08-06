@@ -43,7 +43,10 @@ public class ProductService {
         productMapper.updateOption(product.getId(), strOptionName, strOptionValue);
     }
 
-
+    public void delete(int id) {
+        productMapper.deleteOption(id);
+        productMapper.deleteProduct(id);
+    }
 
 
 }
