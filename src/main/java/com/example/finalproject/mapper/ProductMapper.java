@@ -22,7 +22,7 @@ public interface ProductMapper {
     public void insertOption(int id, String strOptionName, String strOptionValue);
 
     //모든 상품 가져오기 (상품에 맞는 옵션도 같이)
-    @Select("SELECT p.*, po.name as strImage, po.value as strContentImage FROM product p join product_option po on(p.id = po.product_id)")
+    @Select("SELECT p.*, image as strImage, content_image as strContentImage, po.name as strOptionName, value as strOptionValue FROM product p join product_option po on(p.id = po.product_id)")
     public List<ProductVO> selectAll();
 
 }
