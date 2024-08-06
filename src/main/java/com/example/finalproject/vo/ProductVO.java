@@ -26,4 +26,8 @@ public class ProductVO {
     private String strImage;
     private String strContentImage;
 
+    //상품 목록 가져올 때 상품 옵션이 문자열로 되어 있음
+    private String strOptionName;
+    private String strOptionValue;
+
 }

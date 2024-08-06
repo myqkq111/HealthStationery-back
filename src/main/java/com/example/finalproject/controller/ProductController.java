@@ -24,17 +24,19 @@ public class ProductController {
             productService.insert(product, optionName, optionValue);
             return ResponseEntity.ok(1);
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body("User registration failed: " + e.getMessage());
+            return ResponseEntity.badRequest().body("Product registration failed: " + e.getMessage());
         }
     }
 
     @GetMapping("/selectAll")
     public ResponseEntity<?> selectAll() {
-        System.out.println("1");
-        List<ProductVO> list = productService.selectAll();
-        System.out.println("2");
-        System.out.println(list);
-        return ResponseEntity.ok(list);
+        try{
+            List<ProductVO> list = productService.selectAll();
+            return ResponseEntity.ok(list);
+        } catch (Exception e){
+            return ResponseEntity.badRequest().body("Failed to retrieve the list of all products: " + e.getMessage());
+        }
+
     }
 
 }
