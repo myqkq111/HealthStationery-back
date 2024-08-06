@@ -2,10 +2,7 @@ package com.example.finalproject.mapper;
 
 import com.example.finalproject.vo.ProductOptionVO;
 import com.example.finalproject.vo.ProductVO;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Options;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -24,5 +21,13 @@ public interface ProductMapper {
     //모든 상품 가져오기 (상품에 맞는 옵션도 같이)
     @Select("SELECT p.*, image as strImage, content_image as strContentImage, po.name as strOptionName, value as strOptionValue FROM product p join product_option po on(p.id = po.product_id)")
     public List<ProductVO> selectAll();
+
+    //상품 수정
+    @Update("UPDATE product SET cate = #{cate}, name = #{name}, price = #{price}, image = #{strImage}, content = #{content}, content_image = #{strContentImage}, inven = #{inven} WHERE id = #{id}")
+    public void updateProduct(ProductVO product);
+
+    //상품 옵션 수정
+    @Update("UPDATE product_option SET name = #{strOptionName}, value = #{strOptionValue} WHERE product_id = #{id}")
+    public void updateOption(int id, String strOptionName, String strOptionValue);
 
 }

@@ -7,7 +7,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/product")
@@ -35,6 +37,25 @@ public class ProductController {
             return ResponseEntity.ok(list);
         } catch (Exception e){
             return ResponseEntity.badRequest().body("Failed to retrieve the list of all products: " + e.getMessage());
+        }
+
+    }
+
+    @PutMapping("/update/{id}")
+    public Map<String, Object> updateProduct(@PathVariable int id, @ModelAttribute ProductVO product,
+                                             @RequestParam List<String> optionName,
+                                             @RequestParam List<String> optionValue) {
+        Map<String, Object> response = new HashMap<>();
+        try{
+            product.setId(id);
+            productService.update(product, optionName, optionValue);
+            response.put("valid", true);
+            System.out.println("성공");
+            return response;
+        } catch (Exception e){
+            response.put("error", "Failed to retrieve the list of all products: " + e.getMessage());
+            response.put("valid", false);
+            return response;
         }
 
     }
