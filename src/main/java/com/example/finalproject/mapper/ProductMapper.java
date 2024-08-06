@@ -30,4 +30,12 @@ public interface ProductMapper {
     @Update("UPDATE product_option SET name = #{strOptionName}, value = #{strOptionValue} WHERE product_id = #{id}")
     public void updateOption(int id, String strOptionName, String strOptionValue);
 
+    //상품 삭제
+    @Delete("DELETE FROM product WHERE id = #{id}")
+    public void deleteProduct(int id);
+
+    //상품 옵션 삭제
+    @Delete("DELETE FROm product_option WHERE product_id = #{id}")
+    public void deleteOption(int id);
+
 }

@@ -42,22 +42,25 @@ public class ProductController {
     }
 
     @PutMapping("/update/{id}")
-    public Map<String, Object> updateProduct(@PathVariable int id, @ModelAttribute ProductVO product,
+    public ResponseEntity<?> updateProduct(@PathVariable int id, @ModelAttribute ProductVO product,
                                              @RequestParam List<String> optionName,
                                              @RequestParam List<String> optionValue) {
-        Map<String, Object> response = new HashMap<>();
         try{
             product.setId(id);
             productService.update(product, optionName, optionValue);
-            response.put("valid", true);
-            System.out.println("성공");
-            return response;
+            return ResponseEntity.ok(1);
         } catch (Exception e){
-            response.put("error", "Failed to retrieve the list of all products: " + e.getMessage());
-            response.put("valid", false);
-            return response;
+            return ResponseEntity.badRequest().body("Failed to update the product: " + e.getMessage());
         }
-
     }
 
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<?> deleteProduct(@PathVariable int id) {
+        try {
+            productService.delete(id);
+            return ResponseEntity.ok(1);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Failed to delete the product: " + e.getMessage());
+        }
+    }
 }
