@@ -48,5 +48,9 @@ public class ProductService {
         productMapper.deleteProduct(id);
     }
 
+    public List<ProductVO> selectCate(String cate) {
+        return productMapper.selectCate(cate);
+    }
+
 
 }

@@ -38,8 +38,8 @@ public class MemberService {
     public void deleteMember(String email, String cate){
         memberMapper.deleteMember(email,cate);
     }
-    public String confirmPassword(String email, String cate) {
-        return memberMapper.confirmPassword(email, cate);
+    public String confirmPassword(int id) {
+        return memberMapper.confirmPassword(id);
     }
 
     public void updateUser(MemberVO member) { memberMapper.updateUser(member); }
