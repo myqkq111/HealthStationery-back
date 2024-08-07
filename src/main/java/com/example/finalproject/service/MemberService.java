@@ -41,4 +41,8 @@ public class MemberService {
     public String confirmPassword(String email, String cate) {
         return memberMapper.confirmPassword(email, cate);
     }
+
+    public void updateUser(MemberVO member) { memberMapper.updateUser(member); }
+
+    public void updatePassword(MemberVO member) { memberMapper.updatePassword(member); }
 }
