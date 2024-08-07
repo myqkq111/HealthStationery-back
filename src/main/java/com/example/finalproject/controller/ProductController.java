@@ -63,4 +63,6 @@ public class ProductController {
             return ResponseEntity.badRequest().body("Failed to delete the product: " + e.getMessage());
         }
     }
+
+//    @GetMapping("/selectCate")
 }

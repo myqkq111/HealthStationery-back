@@ -63,8 +63,8 @@ public class SecurityConfig{
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
                                 .requestMatchers("/product/**").authenticated()
+//                                .requestMatchers("/member/confirmPassword").authenticated()
                                 .requestMatchers("/member/deleteAccount").authenticated()
-                                .requestMatchers("/member/confirmPassword").authenticated()
                                 .anyRequest().permitAll() // 나머지 모든 요청은 접근 허용
 //                                .anyRequest().authenticated()
                 )

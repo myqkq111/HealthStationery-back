@@ -19,8 +19,8 @@ public interface MemberMapper {
     // 회원 탈퇴
     @Delete("DELETE FROM member WHERE email = #{email} AND cate = #{cate}")
     void deleteMember(String email, String cate);
-    @Select("SELECT password FROM member WHERE email = #{email} AND cate = #{cate}")
-    String confirmPassword(String email, String cate);
+    @Select("SELECT password FROM member WHERE id = #{id}")
+    String confirmPassword(int id);
 
     // 회원 수정
     @Update("UPDATE member " +
