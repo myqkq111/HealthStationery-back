@@ -21,4 +21,12 @@ public class AdminMemberService {
         adminMemberMapper.delete(id);
     }
 
+    public void update(int id, String memberType ){
+        adminMemberMapper.update(id, memberType);
+    }
+
+    public MemberVO selectOne(int id){
+        return adminMemberMapper.selectOne(id);
+    }
+
 }
