@@ -139,4 +139,26 @@ public class MemberController {
                     .body("비밀번호 불일치");
         }
     }
+
+    @PutMapping("/updateUser")
+    public ResponseEntity<?> updateUser(@RequestBody MemberVO member) {
+        try{
+            memberService.updateUser(member);
+            System.out.println(member);
+            return ResponseEntity.ok(1);
+        }catch(Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    // 비밀번호 변경 전 현재 비밀번호 확인하는 api 실행
+    @PutMapping("/updatePassword")
+    public ResponseEntity<?> updatePassword(@RequestBody MemberVO member) {
+        try{
+            memberService.updatePassword(member);
+            return ResponseEntity.ok(1);
+        }catch(Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
 }
