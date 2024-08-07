@@ -35,6 +35,17 @@ public class AdminMemberController {
         }
     }
 
+    @PutMapping("/update/{id}")
+    public ResponseEntity<?> update(@PathVariable int id, @RequestBody String memberType) {
+        try {
+            adminMemberService.update(id, memberType.replace("\"", ""));
+            MemberVO member = adminMemberService.selectOne(id);
+            return ResponseEntity.ok(member);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("User permission setting failed: " + e.getMessage());
+        }
+    }
+
 
 
 

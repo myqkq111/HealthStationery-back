@@ -125,8 +125,10 @@ public class MemberController {
                     .body("회원탈퇴에 실패했습니다.");
         }
     }
+
     @PostMapping("/confirmPassword")
     public ResponseEntity<?> confirmPassword(@RequestBody MemberVO member) {
+        System.out.println("오냐");
         try{
             String pw = memberService.confirmPassword(member.getId());
             if (passwordEncoder.matches(member.getPassword(),pw)) {

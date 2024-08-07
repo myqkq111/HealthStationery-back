@@ -38,4 +38,8 @@ public interface ProductMapper {
     @Delete("DELETE FROm product_option WHERE product_id = #{id}")
     public void deleteOption(int id);
 
+    //상품 카테고리에 따라 가져오기 (상품에 맞는 옵션도 같이)
+    @Select("SELECT p.*, image as strImage, content_image as strContentImage, po.name as strOptionName, value as strOptionValue FROM product p join product_option po on(p.id = po.product_id) WHERE cate = #{cate}")
+    public List<ProductVO> selectCate(String cate);
+
 }
