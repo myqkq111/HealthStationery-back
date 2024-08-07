@@ -7,7 +7,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/product")
@@ -39,4 +41,26 @@ public class ProductController {
 
     }
 
+    @PutMapping("/update/{id}")
+    public ResponseEntity<?> updateProduct(@PathVariable int id, @ModelAttribute ProductVO product,
+                                             @RequestParam List<String> optionName,
+                                             @RequestParam List<String> optionValue) {
+        try{
+            product.setId(id);
+            productService.update(product, optionName, optionValue);
+            return ResponseEntity.ok(1);
+        } catch (Exception e){
+            return ResponseEntity.badRequest().body("Failed to update the product: " + e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<?> deleteProduct(@PathVariable int id) {
+        try {
+            productService.delete(id);
+            return ResponseEntity.ok(1);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Failed to delete the product: " + e.getMessage());
+        }
+    }
 }

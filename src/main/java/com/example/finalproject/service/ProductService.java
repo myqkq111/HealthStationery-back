@@ -30,7 +30,23 @@ public class ProductService {
         return productMapper.selectAll();
     }
 
+    public void update(ProductVO product, List<String> optionName, List<String> optionValue) {
+        String strImage = String.join(",", product.getImage());
+        String strContentImage = String.join(",", product.getContentImage());
 
+        product.setStrImage(strImage);
+        product.setStrContentImage(strContentImage);
+        productMapper.updateProduct(product);
+
+        String strOptionName = String.join(",", optionName);
+        String strOptionValue = optionValue.get(0) + "|" + optionValue.get(1);
+        productMapper.updateOption(product.getId(), strOptionName, strOptionValue);
+    }
+
+    public void delete(int id) {
+        productMapper.deleteOption(id);
+        productMapper.deleteProduct(id);
+    }
 
 
 }

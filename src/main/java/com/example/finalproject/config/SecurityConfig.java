@@ -62,8 +62,11 @@ public class SecurityConfig{
                 .formLogin(withDefaults())
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
-                                .requestMatchers("/**").permitAll() //모든 URL 패턴에 대해 접근
-                                .anyRequest().authenticated() // 다른 모든 요청은 인증된 사용자만 접근 가능
+                                .requestMatchers("/product/**").authenticated() // /product/** 경로는 인증 요구
+                                .requestMatchers("/member/deleteAccount").authenticated()
+                                .requestMatchers("/member/confirmPassword").authenticated()
+                                .anyRequest().permitAll() // 나머지 모든 요청은 접근 허용
+//                                .anyRequest().authenticated()
                 )
                 .oauth2Login(oauth2Login ->
                         oauth2Login
