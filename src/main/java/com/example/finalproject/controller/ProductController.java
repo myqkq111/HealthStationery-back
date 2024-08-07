@@ -64,5 +64,20 @@ public class ProductController {
         }
     }
 
-//    @GetMapping("/selectCate")
+    @GetMapping("/selectCate")
+    public ResponseEntity<?> selectCate(@RequestParam String cate) {
+        try {
+            List<ProductVO> list =  productService.selectCate(cate);
+            return ResponseEntity.ok(list);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Failed to retrieve products for the selected category: " + e.getMessage());
+        }
+    }
+
+//    @GetMapping("/selectOne")
+//    public ResponseEntity<?> selectOne(@RequestParam int id) {
+//
+//    }
+
+
 }
