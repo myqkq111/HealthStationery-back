@@ -62,7 +62,7 @@ public class SecurityConfig{
                 .formLogin(withDefaults())
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
-                                .requestMatchers("/product/**").authenticated() // /product/** 경로는 인증 요구
+                                .requestMatchers("/product/**").authenticated()
                                 .requestMatchers("/member/deleteAccount").authenticated()
                                 .requestMatchers("/member/confirmPassword").authenticated()
                                 .anyRequest().permitAll() // 나머지 모든 요청은 접근 허용
