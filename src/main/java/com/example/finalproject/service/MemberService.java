@@ -35,8 +35,8 @@ public class MemberService {
         return memberMapper.findByEmail(email);
     }
 
-    public void deleteMember(String email, String cate){
-        memberMapper.deleteMember(email,cate);
+    public void deleteMember(int id){
+        memberMapper.deleteMember(id);
     }
     public String confirmPassword(int id) {
         return memberMapper.confirmPassword(id);
