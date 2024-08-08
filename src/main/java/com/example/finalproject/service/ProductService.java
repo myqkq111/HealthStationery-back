@@ -52,5 +52,9 @@ public class ProductService {
         return productMapper.selectCate(cate);
     }
 
+    public ProductVO selectOne(int id) {
+        return productMapper.selectOne(id);
+    }
+
 
 }
