@@ -74,10 +74,15 @@ public class ProductController {
         }
     }
 
-//    @GetMapping("/selectOne")
-//    public ResponseEntity<?> selectOne(@RequestParam int id) {
-//
-//    }
+    @GetMapping("/selectOne")
+    public ResponseEntity<?> selectOne(@RequestParam int id) {
+        try {
+            ProductVO product =  productService.selectOne(id);
+            return ResponseEntity.ok(product);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Failed to retrieve products for the selected category: " + e.getMessage());
+        }
+    }
 
 
 }

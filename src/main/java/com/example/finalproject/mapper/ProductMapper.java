@@ -42,4 +42,11 @@ public interface ProductMapper {
     @Select("SELECT p.*, image as strImage, content_image as strContentImage, po.name as strOptionName, value as strOptionValue FROM product p join product_option po on(p.id = po.product_id) WHERE cate = #{cate}")
     public List<ProductVO> selectCate(String cate);
 
+    //상품 상세보기 (상품에 맞는 옵션도 같이)
+    @Select("SELECT p.*, image as strImage, content_image as strContentImage, po.name as strOptionName, value as strOptionValue FROM product p join product_option po on(p.id = po.product_id) WHERE p.id = #{id}")
+    public ProductVO selectOne(int id);
+
+    //상품 좋아요
+
+
 }
