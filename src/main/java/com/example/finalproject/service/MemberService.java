@@ -44,5 +44,9 @@ public class MemberService {
 
     public void updateUser(MemberVO member) { memberMapper.updateUser(member); }
 
-    public void updatePassword(MemberVO member) { memberMapper.updatePassword(member); }
+    public void updatePassword(MemberVO member) {
+        String encodedPassword = passwordEncoder.encode(member.getPassword());
+        member.setPassword(encodedPassword);
+        memberMapper.updatePassword(member);
+    }
 }
