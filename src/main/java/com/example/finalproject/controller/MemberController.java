@@ -116,10 +116,9 @@ public class MemberController {
     }
 
     @DeleteMapping("/deleteAccount")
-    public ResponseEntity<String> deleteAccount(@RequestHeader("Authorization") String token, @RequestBody MemberVO member) {
+    public ResponseEntity<String> deleteAccount(@RequestBody MemberVO member) {
         try {
-            String email = jwtUtil.extractUsername(token.replace("Bearer ", ""));
-            memberService.deleteMember(email,member.getCate());
+            memberService.deleteMember(member.getId());
             return ResponseEntity.ok("회원탈퇴가 완료되었습니다.");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -129,10 +128,8 @@ public class MemberController {
 
     @PostMapping("/confirmPassword")
     public ResponseEntity<?> confirmPassword(@RequestBody MemberVO member) {
-        System.out.println("오냐");
         try{
             String pw = memberService.confirmPassword(member.getId());
-            System.out.println("PW : "+ pw);
             if (passwordEncoder.matches(member.getPassword(),pw)) {
                 return ResponseEntity.ok(1);
             }
@@ -147,7 +144,6 @@ public class MemberController {
     public ResponseEntity<?> updateUser(@RequestBody MemberVO member) {
         try{
             memberService.updateUser(member);
-            System.out.println(member);
             return ResponseEntity.ok(1);
         }catch(Exception e){
             return ResponseEntity.badRequest().body(e.getMessage());
