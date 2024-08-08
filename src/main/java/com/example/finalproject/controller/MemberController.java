@@ -128,7 +128,6 @@ public class MemberController {
 
     @PostMapping("/confirmPassword")
     public ResponseEntity<?> confirmPassword(@RequestBody MemberVO member) {
-        System.out.println("오냐");
         try{
             String pw = memberService.confirmPassword(member.getId());
             if (passwordEncoder.matches(member.getPassword(),pw)) {
