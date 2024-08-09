@@ -28,8 +28,8 @@ public class ProductVO {
 //    //상품 목록 가져올 때 상품 옵션이 문자열로 되어 있음
 //    private String strOptionName;
 //    private String strOptionValue;
-
+    private List<String> sizeStock;
     //상품 옵션
-    List<ProductOptionVO> productOptions;
+    List<ProductOptionVO> list;
 
 }
