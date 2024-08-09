@@ -19,8 +19,12 @@ public interface ProductMapper {
     public void insertOption(ProductOptionVO productOptionVO);
 
     //모든 상품 가져오기 (상품에 맞는 옵션도 같이)
-    @Select("SELECT p.*, image as strImage, content_image as strContentImage, po.* FROM product p join product_option po on(p.id = po.product_id)")
+    @Select("SELECT *, image as strImage, content_image as strContentImage FROM product")
     public List<ProductVO> selectAll();
+
+    //모든 옵션 가져오기
+    @Select("SELECT *, product_id as productId FROM product_option")
+    public List<ProductOptionVO> selectOptionAll();
 
     //상품 수정
     @Update("UPDATE product SET cate = #{cate}, name = #{name}, price = #{price}, image = #{strImage}, content = #{content}, content_image = #{strContentImage} WHERE id = #{id}")
