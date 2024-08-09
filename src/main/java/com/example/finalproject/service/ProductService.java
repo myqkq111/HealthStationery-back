@@ -111,11 +111,62 @@ public class ProductService {
     }
 
     public List<ProductVO> selectCate(String cate) {
-        return productMapper.selectCate(cate);
+
+        // 카테고리에 맞는 상품을 가져옵니다.
+        List<ProductVO> listProduct = productMapper.selectCate(cate);
+
+        // 모든 상품 옵션을 가져옵니다.
+        List<ProductOptionVO> listOptions = productMapper.selectOptionAll();
+
+        // 상품 ID를 키로, 옵션 목록을 값으로 가지는 맵을 만듭니다.
+        Map<Integer, List<ProductOptionVO>> productOptionsMap = new HashMap<>();
+
+        // 상품 옵션 목록을 맵에 추가합니다.
+        for (ProductOptionVO option : listOptions) {
+            productOptionsMap
+                    .computeIfAbsent(option.getProductId(), k -> new ArrayList<>())
+                    .add(option);
+        }
+
+        // 상품 목록을 순회하며 해당 상품의 옵션을 설정합니다.
+        for (ProductVO product : listProduct) {
+            List<ProductOptionVO> optionsForProduct = productOptionsMap.get(product.getId());
+            if (optionsForProduct != null) {
+                product.setList(optionsForProduct);
+            } else {
+                product.setList(new ArrayList<>()); // 옵션이 없는 경우 빈 리스트를 설정합니다.
+            }
+        }
+
+        return listProduct;
     }
 
     public ProductVO selectOne(int id) {
-        return productMapper.selectOne(id);
+        // id에 맞는 상품을 가져옵니다.
+        ProductVO listProduct = productMapper.selectOne(id);
+
+        // 모든 상품 옵션을 가져옵니다.
+        List<ProductOptionVO> listOptions = productMapper.selectOptionAll();
+
+        // 상품 ID를 키로, 옵션 목록을 값으로 가지는 맵을 만듭니다.
+        Map<Integer, List<ProductOptionVO>> productOptionsMap = new HashMap<>();
+
+        // 상품 옵션 목록을 맵에 추가합니다.
+        for (ProductOptionVO option : listOptions) {
+            productOptionsMap
+                    .computeIfAbsent(option.getProductId(), k -> new ArrayList<>())
+                    .add(option);
+        }
+
+        // 상품에 맞는 상품의 옵션을 설정합니다.
+        List<ProductOptionVO> optionsForProduct = productOptionsMap.get(listProduct.getId());
+        if (optionsForProduct != null) {
+            listProduct.setList(optionsForProduct);
+        } else {
+            listProduct.setList(new ArrayList<>()); // 옵션이 없는 경우 빈 리스트를 설정합니다.
+        }
+
+        return listProduct;
     }
 
 
