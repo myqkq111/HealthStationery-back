@@ -20,10 +20,9 @@ public class ProductController {
 
     @PostMapping("/insert")
     public ResponseEntity<?> insertProduct(@ModelAttribute ProductVO product,
-                                           @RequestParam List<String> optionName,
-                                           @RequestParam List<String> optionValue) {
+                                           @RequestParam List<String> list) {
         try{
-            productService.insert(product, optionName, optionValue);
+            productService.insert(product, list);
             return ResponseEntity.ok(1);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Product registration failed: " + e.getMessage());
@@ -38,7 +37,6 @@ public class ProductController {
         } catch (Exception e){
             return ResponseEntity.badRequest().body("Failed to retrieve the list of all products: " + e.getMessage());
         }
-
     }
 
     @PutMapping("/update/{id}")

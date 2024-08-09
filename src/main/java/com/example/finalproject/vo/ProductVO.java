@@ -19,15 +19,17 @@ public class ProductVO {
     private LocalDateTime regdt; //등록일
     private int like; //좋아요 개수
     private int view; //조회수
-    private int inven; //재고
     private int sale_count; //판매량
 
     //상품 등록 때 List를 String으로 변환 후 DB에 넣어야함
     private String strImage;
     private String strContentImage;
 
-    //상품 목록 가져올 때 상품 옵션이 문자열로 되어 있음
-    private String strOptionName;
-    private String strOptionValue;
+//    //상품 목록 가져올 때 상품 옵션이 문자열로 되어 있음
+//    private String strOptionName;
+//    private String strOptionValue;
+
+    //상품 옵션
+    List<ProductOptionVO> productOptions;
 
 }
