@@ -35,7 +35,6 @@ public class ProductController {
     public ResponseEntity<?> selectAll() {
         try{
             List<ProductVO> list = productService.selectAll();
-            System.out.println(list);
             return ResponseEntity.ok(list);
         } catch (Exception e){
             return ResponseEntity.badRequest().body("Failed to retrieve the list of all products: " + e.getMessage());
