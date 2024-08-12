@@ -20,6 +20,7 @@ public class ProductVO {
     private int like; //좋아요 개수
     private int view; //조회수
     private int sale_count; //판매량
+    private int likeToggle;
 
     //상품 등록 때 List를 String으로 변환 후 DB에 넣어야함
     private String strImage;
