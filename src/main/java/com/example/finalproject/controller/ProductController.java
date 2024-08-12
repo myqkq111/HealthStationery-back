@@ -1,6 +1,7 @@
 package com.example.finalproject.controller;
 
 import com.example.finalproject.service.ProductService;
+import com.example.finalproject.service.WishListService;
 import com.example.finalproject.vo.ProductVO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,9 @@ public class ProductController {
 
     @Autowired
     ProductService productService;
+
+    @Autowired
+    WishListService wishListService;
 
     @PostMapping("/insert")
     public ResponseEntity<?> insertProduct(@ModelAttribute ProductVO product){
@@ -75,12 +79,15 @@ public class ProductController {
     }
 
     @GetMapping("/selectOne")
-    public ResponseEntity<?> selectOne(@RequestParam int id) {
+    public ResponseEntity<?> selectOne(@RequestParam int id,@RequestParam int uid) {
         try {
             ProductVO product =  productService.selectOne(id);
+            System.out.println(product);
+            if(wishListService.isLikedMember(id,uid)>=1)
+                product.setLikeToggle(product.getLikeToggle()+1);
             return ResponseEntity.ok(product);
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Failed to retrieve products for the selected category: " + e.getMessage());
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
