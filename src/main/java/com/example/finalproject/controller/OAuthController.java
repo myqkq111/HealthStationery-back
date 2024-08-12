@@ -1,6 +1,8 @@
 package com.example.finalproject.controller;
 
 import com.example.finalproject.jwt.JwtUtil;
+import com.example.finalproject.service.CustomUserDetailsService;
+import com.example.finalproject.service.MemberService;
 import com.example.finalproject.service.OAuthService;
 import com.example.finalproject.vo.AuthResponseVO;
 import com.example.finalproject.vo.MemberVO;
@@ -18,6 +20,9 @@ public class OAuthController {
     OAuthService oAuthService;
 
     @Autowired
+    MemberService memberService;
+
+    @Autowired
     private UserDetailsService userDetailsService;
 
     @Autowired
@@ -28,9 +33,13 @@ public class OAuthController {
         MemberVO member = oAuthService.findByEmail(email, cate);
         String jwt = "";
         if (member == null) {
-            jwt = "no";
+            if(memberService.findByEmail(email) == null){
+                jwt = "no";
+            } else{
+                jwt = "yes";
+            }
         } else{
-            final UserDetails userDetails = userDetailsService.loadUserByUsername(email);
+            UserDetails userDetails = userDetailsService.loadUserByUsername(email);
             jwt = jwtUtil.generateToken(userDetails.getUsername());
         }
         return ResponseEntity.ok(new AuthResponseVO(jwt,member));

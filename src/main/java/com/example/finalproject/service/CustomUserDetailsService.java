@@ -1,6 +1,7 @@
 package com.example.finalproject.service;
 
 import com.example.finalproject.mapper.MemberMapper;
+import com.example.finalproject.mapper.OAuthMapper;
 import com.example.finalproject.vo.MemberVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,6 +16,9 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Autowired
     private MemberMapper memberMapper;
 
+    @Autowired
+    public OAuthMapper oAuthMapper;
+
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         MemberVO member = memberMapper.findByEmail(email);
@@ -22,16 +26,16 @@ public class CustomUserDetailsService implements UserDetailsService {
             throw new UsernameNotFoundException("User not found with email: " + email);
         }
         String password = member.getPassword();
-        if(password == null){
+        if (password == null) {
             return User.withUsername(member.getEmail())
                     .password("")
-//                .roles(member.getMember_type()) // 'admin', 'user' 등으로 설정
                     .build();
         } else {
             return User.withUsername(member.getEmail())
                     .password(member.getPassword())
-//                .roles(member.getMember_type()) // 'admin', 'user' 등으로 설정
                     .build();
         }
     }
 }
+
+
