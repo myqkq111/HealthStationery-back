@@ -110,11 +110,11 @@ public ResponseEntity<?> updateProduct(@PathVariable int id, @ModelAttribute Pro
     }
 
     @GetMapping("/selectOne")
-    public ResponseEntity<?> selectOne(@RequestParam int id,@RequestParam int uid) {
+    public ResponseEntity<?> selectOne(@RequestParam int id,@RequestParam(required = false) Integer uid) {
         try {
             ProductVO product =  productService.selectOne(id);
             System.out.println(product);
-            if(wishListService.isLikedMember(id,uid)>=1)
+            if(uid != null && wishListService.isLikedMember(id,uid)>=1)
                 product.setLikeToggle(product.getLikeToggle()+1);
             return ResponseEntity.ok(product);
         } catch (Exception e) {
