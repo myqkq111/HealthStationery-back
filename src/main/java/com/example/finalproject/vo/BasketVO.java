@@ -11,4 +11,10 @@ public class BasketVO {
     private String color; //상품 컬러
     private String size; //상품 사이즈
     private String count; //상품 개수
+
+
+    private String name;
+    private String cate;
+    private String price;
+    private String strImage;
 }

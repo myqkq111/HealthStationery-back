@@ -55,39 +55,27 @@ public class ProductController {
         }
     }
 
-//    @PutMapping("/update/{id}")
-//    public ResponseEntity<?> updateProduct(@PathVariable int id, @ModelAttribute ProductVO product,
-//                                             @RequestParam List<String> optionName,
-//                                             @RequestParam List<String> optionValue) {
-//        try{
-//            product.setId(id);
-//            productService.update(product, optionName, optionValue);
-//            return ResponseEntity.ok(1);
-//        } catch (Exception e){
-//            return ResponseEntity.badRequest().body("Failed to update the product: " + e.getMessage());
-//        }
-//    }
 
-@PutMapping("/update/{id}")
-public ResponseEntity<?> updateProduct(@PathVariable int id, @ModelAttribute ProductVO product,
-                                       @RequestParam("sizeStock") String sizeStockJson) {
-    try{
-        // JSON 문자열을 List<ProductOptionVO>로 변환
-        ObjectMapper objectMapper = new ObjectMapper();
-        List<ProductOptionVO> sizeStockList = objectMapper.readValue(sizeStockJson, new TypeReference<List<ProductOptionVO>>() {});
+    @PutMapping("/update/{id}")
+    public ResponseEntity<?> updateProduct(@PathVariable int id, @ModelAttribute ProductVO product,
+                                           @RequestParam("sizeStock") String sizeStockJson) {
+        try{
+            // JSON 문자열을 List<ProductOptionVO>로 변환
+            ObjectMapper objectMapper = new ObjectMapper();
+            List<ProductOptionVO> sizeStockList = objectMapper.readValue(sizeStockJson, new TypeReference<List<ProductOptionVO>>() {});
 
-        // List<ProductOptionVO>를 List<String>으로 변환
-        List<String> sizeStockStrings = sizeStockList.stream()
-                .flatMap(option -> List.of(option.getColor(), option.getSize(), String.valueOf(option.getStock())).stream())
-                .collect(Collectors.toList());
-        product.setSizeStock(sizeStockStrings);
-        product.setId(id);
-        productService.update(product);
-        return ResponseEntity.ok(1);
-    } catch (Exception e){
-        return ResponseEntity.badRequest().body("Failed to update the product: " + e.getMessage());
+            // List<ProductOptionVO>를 List<String>으로 변환
+            List<String> sizeStockStrings = sizeStockList.stream()
+                    .flatMap(option -> List.of(option.getColor(), option.getSize(), String.valueOf(option.getStock())).stream())
+                    .collect(Collectors.toList());
+            product.setSizeStock(sizeStockStrings);
+            product.setId(id);
+            productService.update(product);
+            return ResponseEntity.ok(1);
+        } catch (Exception e){
+            return ResponseEntity.badRequest().body("Failed to update the product: " + e.getMessage());
+        }
     }
-}
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> deleteProduct(@PathVariable int id) {
