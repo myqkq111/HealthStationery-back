@@ -92,17 +92,51 @@ public class ProductService {
         return listProduct;
     }
 
-    public void update(ProductVO product, List<String> optionName, List<String> optionValue) {
+    public void update(ProductVO product) {
         String strImage = String.join(",", product.getImage());
         String strContentImage = String.join(",", product.getContentImage());
 
         product.setStrImage(strImage);
         product.setStrContentImage(strContentImage);
-        productMapper.updateProduct(product);
+        productMapper.insertProduct(product);
 
-        String strOptionName = String.join(",", optionName);
-        String strOptionValue = optionValue.get(0) + "|" + optionValue.get(1);
-        productMapper.updateOption(product.getId(), strOptionName, strOptionValue);
+        productMapper.deleteOption(product.getId());
+
+        // sizeStock이 List<String>로 반환되는 경우를 가정
+        List<String> sizeStockList = product.getSizeStock();
+
+        // 리스트의 크기가 3의 배수가 아닌 경우를 처리
+        if (sizeStockList.size() % 3 != 0) {
+            throw new IllegalArgumentException("SizeStock list size is not a multiple of 3");
+        }
+
+        for (int i = 0; i < sizeStockList.size(); i += 3) {
+            // 3개씩 나누어 데이터 추출
+            String color = sizeStockList.get(i).trim();
+            String size = sizeStockList.get(i + 1).trim();
+            int stock;
+            try {
+                stock = Integer.parseInt(sizeStockList.get(i + 2).trim());
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid stock format: " + sizeStockList.get(i + 2));
+                continue;
+            }
+
+            // ProductOptionVO 객체 생성 및 설정
+            ProductOptionVO productOption = new ProductOptionVO();
+            productOption.setProductId(product.getId()); // 상품 고유번호 설정
+            productOption.setColor(color); // 색상 설정
+            productOption.setSize(size); // 사이즈 설정
+            productOption.setStock(stock); // 재고 설정
+
+            // productMapper를 사용하여 데이터베이스에 저장
+            try {
+                productMapper.insertOption(productOption);
+            } catch (Exception e) {
+                System.out.println("Failed to insert option: " + e.getMessage());
+                // 예외 처리 로직을 추가할 수 있습니다.
+            }
+        }
     }
 
     public void delete(int id) {
