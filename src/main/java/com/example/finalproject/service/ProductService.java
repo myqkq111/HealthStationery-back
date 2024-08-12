@@ -98,7 +98,7 @@ public class ProductService {
 
         product.setStrImage(strImage);
         product.setStrContentImage(strContentImage);
-        productMapper.insertProduct(product);
+        productMapper.updateProduct(product);
 
         productMapper.deleteOption(product.getId());
 
