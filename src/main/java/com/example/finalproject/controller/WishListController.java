@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/wishlist")
 public class WishListController {
@@ -30,6 +32,16 @@ public class WishListController {
             return ResponseEntity.ok(1);
         }catch (Exception e) {
             return ResponseEntity.badRequest().body("찜해제 오류"+e.getMessage());
+        }
+    }
+
+    @GetMapping("/view")
+    public ResponseEntity<?> viewWishList(@RequestParam int id){
+        try{
+            List<LikeVO> list = wishListService.view(id);
+            return ResponseEntity.ok(list);
+        }catch (Exception e) {
+            return ResponseEntity.badRequest().body("wishList 목록 오류"+e.getMessage());
         }
     }
 

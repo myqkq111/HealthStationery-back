@@ -56,10 +56,19 @@ public class BasketController {
     public ResponseEntity<?> selectByMemberId(@RequestParam int memberId) {
         try {
             List<BasketVO> list = basketService.selectByMemberId(memberId);
-            System.out.println(list);
             return ResponseEntity.ok(list);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Failed to retrieve cart items: " + e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/delete")
+    public ResponseEntity<?> delete(@RequestParam int id) {
+        try {
+            basketService.delete(id);
+            return ResponseEntity.ok(1);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Failed to remove item from the cart: " + e.getMessage());
         }
     }
 

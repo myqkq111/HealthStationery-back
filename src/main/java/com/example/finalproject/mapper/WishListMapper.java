@@ -26,5 +26,6 @@ public interface WishListMapper {
     public void likeFalse(LikeVO likeVO);
 
     // 마이페이지 속 좋아요 목록
-   
+    @Select("SELECT w.*, w.product_id as productId, w.member_id as memberId, p.name,  p.cate, p.price, p.image as strImage FROM wishlist w join product p on (w.product_id = p.id) WHERE w.member_id = #{id};")
+    List<LikeVO> view(int id);
 }
