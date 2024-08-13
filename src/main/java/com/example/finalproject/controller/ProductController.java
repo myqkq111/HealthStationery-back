@@ -1,7 +1,9 @@
 package com.example.finalproject.controller;
 
+import com.example.finalproject.service.InqService;
 import com.example.finalproject.service.ProductService;
 import com.example.finalproject.service.WishListService;
+import com.example.finalproject.vo.InqVO;
 import com.example.finalproject.vo.ProductOptionVO;
 import com.example.finalproject.vo.ProductVO;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -10,7 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 
@@ -23,6 +27,9 @@ public class ProductController {
 
     @Autowired
     WishListService wishListService;
+
+    @Autowired
+    InqService inqService;
 
     @PostMapping("/insert")
     public ResponseEntity<?> insertProduct(@ModelAttribute ProductVO product, @RequestParam("sizeStock") String sizeStockJson){
@@ -101,10 +108,13 @@ public class ProductController {
     public ResponseEntity<?> selectOne(@RequestParam int id,@RequestParam(required = false) Integer uid) {
         try {
             ProductVO product =  productService.selectOne(id);
-            System.out.println(product);
+            List<InqVO> inqList = inqService.selectAll(id);
+            Map<String, Object> productDetailsMap = new HashMap<>();
+            productDetailsMap.put("product", product);
+            productDetailsMap.put("inquiries", inqList);
             if(uid != null && wishListService.isLikedMember(id,uid)>=1)
                 product.setLikeToggle(product.getLikeToggle()+1);
-            return ResponseEntity.ok(product);
+            return ResponseEntity.ok(productDetailsMap);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Failed to retrieve products for the selected category: " + e.getMessage());
         }
