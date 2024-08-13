@@ -1,10 +1,7 @@
 package com.example.finalproject.mapper;
 
 import com.example.finalproject.vo.BasketVO;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -22,6 +19,9 @@ public interface BasketMapper {
 
     @Update("UPDATE basket SET count = count + 1 WHERE id = #{id}")
     void update(int id);
+
+    @Delete("DELETE FROM basket WHERE id = #{id}")
+    void delete(int id);
 
 
 }

@@ -5,6 +5,8 @@ import com.example.finalproject.vo.LikeVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class WishListService {
     @Autowired
@@ -20,5 +22,9 @@ public class WishListService {
 
     public void likeFalse(LikeVO likeVO){
         wishListMapper.likeFalse(likeVO);
+    }
+
+    public List<LikeVO> view(int id){
+        return wishListMapper.view(id);
     }
 }
