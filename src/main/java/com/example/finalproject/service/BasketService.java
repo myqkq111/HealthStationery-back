@@ -29,6 +29,8 @@ public class BasketService {
         basketMapper.update(id);
     }
 
-
+    public void delete(int id){
+        basketMapper.delete(id);
+    }
 
 }
