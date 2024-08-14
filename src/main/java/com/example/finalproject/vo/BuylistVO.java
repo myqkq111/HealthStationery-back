@@ -21,4 +21,6 @@ public class BuylistVO {
 
     List<BuylistProductVO> products; //선택한 상품 옵션
 
+    private int purchaseSource; //구매 페이지에 들어온 경로 (바로구매 버튼 or 장바구니)
+
 }

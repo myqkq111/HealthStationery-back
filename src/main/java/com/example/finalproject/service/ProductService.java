@@ -203,5 +203,9 @@ public class ProductService {
         return listProduct;
     }
 
+    public void stockUpdate(int id, String color, String size, int count){
+        productMapper.stockUpdate(id, color, size, count);
+    }
+
 
 }

@@ -23,5 +23,8 @@ public interface BasketMapper {
     @Delete("DELETE FROM basket WHERE id = #{id}")
     void delete(int id);
 
+    @Delete("DELETE FROM basket WHERE product_id = #{productId} AND member_id = #{memberId} AND color = #{color} AND size = #{size}")
+    void buylistAfterDelete(BasketVO basket);
+
 
 }

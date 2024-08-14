@@ -33,4 +33,14 @@ public class BasketService {
         basketMapper.delete(id);
     }
 
+    public void buylistAfterDelete(int productId, int memberId, String color, String size){
+        BasketVO basket = new BasketVO();
+        basket.setProductId(productId);
+        basket.setMemberId(memberId);
+        basket.setColor(color);
+        basket.setSize(size);
+
+        basketMapper.buylistAfterDelete(basket);
+    }
+
 }
