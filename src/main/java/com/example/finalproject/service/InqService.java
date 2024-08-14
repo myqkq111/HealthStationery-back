@@ -20,4 +20,8 @@ public class InqService {
     public void insert(InqVO inqVO){
         inqMapper.insert(inqVO);
     }
+
+    public List<InqVO> selectAdmin(){
+        return inqMapper.selectAdmin();
+    }
 }

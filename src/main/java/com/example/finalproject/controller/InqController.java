@@ -4,10 +4,9 @@ import com.example.finalproject.service.InqService;
 import com.example.finalproject.vo.InqVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/Inquiry")
@@ -22,6 +21,16 @@ public class InqController {
             System.out.println(inq);
             inqService.insert(inq);
             return ResponseEntity.ok(1);
+        }catch(Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/selectAll")
+    public ResponseEntity<?> selectAdmiin() {
+        try{
+            List<InqVO> list = inqService.selectAdmin();
+            return ResponseEntity.ok(list);
         }catch(Exception e){
             return ResponseEntity.badRequest().body(e.getMessage());
         }
