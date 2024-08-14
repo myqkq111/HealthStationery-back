@@ -29,8 +29,8 @@ public class BasketService {
         basketMapper.update(id);
     }
 
-    public void delete(int id){
-        basketMapper.delete(id);
+    public void delete(List<Integer> ids){
+        basketMapper.delete(ids);
     }
 
     public void buylistAfterDelete(int productId, int memberId, String color, String size){

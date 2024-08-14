@@ -20,8 +20,15 @@ public interface BasketMapper {
     @Update("UPDATE basket SET count = count + 1 WHERE id = #{id}")
     void update(int id);
 
-    @Delete("DELETE FROM basket WHERE id = #{id}")
-    void delete(int id);
+    @Delete({
+            "<script>",
+            "DELETE FROM basket WHERE id IN",
+            "<foreach item='id' collection='list' open='(' separator=',' close=')'>",
+            "#{id}",
+            "</foreach>",
+            "</script>"
+    })
+    void delete(List<Integer> ids);
 
     @Delete("DELETE FROM basket WHERE product_id = #{productId} AND member_id = #{memberId} AND color = #{color} AND size = #{size}")
     void buylistAfterDelete(BasketVO basket);
