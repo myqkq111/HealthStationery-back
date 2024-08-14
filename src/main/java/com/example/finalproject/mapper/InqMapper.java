@@ -23,6 +23,6 @@ public interface InqMapper {
     void insert(InqVO inqVO);
 
     //모든 문의글 보여주기
-    @Select("SELECT * FROM inq")
+    @Select("SELECT i.*, i.product_id as productId, i.member_id as memberId, m.name FROM inq i JOIN member m ON(i.member_id = m.id)")
     List<InqVO> selectAdmin();
 }

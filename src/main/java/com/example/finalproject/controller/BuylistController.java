@@ -16,10 +16,20 @@ public class BuylistController {
     @PostMapping("/insert")
     public ResponseEntity<?> insert(@RequestBody BuylistVO buyList){
         try {
-            buylistService.insert(buyList);
-            return ResponseEntity.ok(1);
+            int id = buylistService.insert(buyList);
+            return ResponseEntity.ok(id);
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Failed to add item to cart: " + e.getMessage());
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/selectOne")
+    public ResponseEntity<?> selectOne(@RequestParam int id){
+        try {
+            BuylistVO buylist = buylistService.selectSuccess(id);
+            return ResponseEntity.ok(buylist);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 

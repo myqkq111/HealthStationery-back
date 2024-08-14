@@ -21,7 +21,7 @@ public class BuylistService {
     @Autowired
     BasketService basketService;
 
-    public void insert(BuylistVO buylist){
+    public int insert(BuylistVO buylist){
         //구매내역 등록
         buylistMapper.insertBuylist(buylist);
         List<BuylistProductVO> list = buylist.getProducts();
@@ -38,9 +38,11 @@ public class BuylistService {
                 basketService.buylistAfterDelete(product.getProductId(), buylist.getMemberId(), product.getColor(), product.getSize());
             }
         }
+        return buylist.getId();
+    }
 
-
-
+    public BuylistVO selectSuccess(int id){
+        return buylistMapper.selectSuccess(id);
     }
 
 }

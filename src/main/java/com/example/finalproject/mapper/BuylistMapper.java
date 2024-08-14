@@ -20,9 +20,9 @@ public interface BuylistMapper {
     @Insert("INSERT INTO buylist_product(buylist_id, product_id, color, size, count) VALUES (#{buylistId}, #{productId}, #{color}, #{size}, #{count})")
     void insertBuylistProduct(BuylistProductVO buylist);
 
+    //결제완료 페이지 띄우기
+    @Select("SELECT * FROM buylist WHERE id = #{id}")
+    BuylistVO selectSuccess(int id);
 
-
-    //마이페이지 구매내역 조회
-//    @Select("SELECT * FROM ")
 
 }

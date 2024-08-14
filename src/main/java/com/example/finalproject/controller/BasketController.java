@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import retrofit2.http.POST;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/basket")
@@ -63,12 +64,13 @@ public class BasketController {
     }
 
     @DeleteMapping("/delete")
-    public ResponseEntity<?> delete(@RequestParam int id) {
+    public ResponseEntity<?> delete(@RequestBody Map<String, List<Integer>> payload) {
+        List<Integer> ids = payload.get("ids");
         try {
-            basketService.delete(id);
+            basketService.delete(ids);
             return ResponseEntity.ok(1);
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Failed to remove item from the cart: " + e.getMessage());
+            return ResponseEntity.badRequest().body("Failed to remove items from the cart: " + e.getMessage());
         }
     }
 
