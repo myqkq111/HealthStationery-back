@@ -30,10 +30,6 @@ public interface ProductMapper {
     @Update("UPDATE product SET cate = #{cate}, name = #{name}, price = #{price}, image = #{strImage}, content = #{content}, content_image = #{strContentImage} WHERE id = #{id}")
     public void updateProduct(ProductVO product);
 
-    //상품 옵션 수정
-    @Update("UPDATE product_option SET  WHERE product_id = #{id}")
-    public void updateOption(int id, String strOptionName, String strOptionValue);
-
     //상품 삭제
     @Delete("DELETE FROM product WHERE id = #{id}")
     public void deleteProduct(int id);
@@ -49,5 +45,9 @@ public interface ProductMapper {
     //상품 상세보기 (상품에 맞는 옵션도 같이)
     @Select("SELECT *, image as strImage, content_image as strContentImage FROM product WHERE id = #{id}")
     public ProductVO selectOne(int id);
+
+    //상품 옵션 수정
+    @Update("UPDATE product_option SET stock = stock - #{count} WHERE product_id = #{id} AND color = #{color} AND size = #{size}")
+    public void stockUpdate(int id, String color, String size, int count);
 
 }
