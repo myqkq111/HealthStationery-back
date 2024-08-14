@@ -14,7 +14,10 @@ public class InqService {
     InqMapper inqMapper;
 
     public List<InqVO> selectAll(int productId){
-        System.out.println(inqMapper.selectAll(productId));
         return inqMapper.selectAll(productId);
+    }
+
+    public void insert(InqVO inqVO){
+        inqMapper.insert(inqVO);
     }
 }
