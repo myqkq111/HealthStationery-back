@@ -10,13 +10,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/product")
+@RequestMapping("/Inquiry")
 public class InqController {
 
     @Autowired
     InqService inqService;
 
-    @PostMapping("/inq")
+    @PostMapping("/insert")
     public ResponseEntity<?> insertInq(@RequestBody InqVO inq) {
         try{
             System.out.println(inq);
