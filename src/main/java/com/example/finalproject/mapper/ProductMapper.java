@@ -50,4 +50,24 @@ public interface ProductMapper {
     @Update("UPDATE product_option SET stock = stock - #{count} WHERE product_id = #{id} AND color = #{color} AND size = #{size}")
     public void stockUpdate(int id, String color, String size, int count);
 
+    //상품 ID에 맞는 옵션 가져오기
+    @Select("SELECT *, product_id as productId FROM product_option WHERE product_id = #{id}")
+    public List<ProductOptionVO> oneOption(int id);
+
+    //판매량 증가
+    @Update("UPDATE product SET sale_count = sale_count + 1 WHERE id = #{id}")
+    public void saleCountUp(int id);
+
+    //환불에 의한 판매량 감소
+     @Update("UPDATE product SET sale_count = sale_count - 1 WHERE id = #{id}")
+     public void saleCountDown(int id);
+
+    //환불에 의한 재고 증가
+    @Update("UPDATE product_option SET stock = stock + #{count} WHERE product_id = #{id} AND color = #{color} AND size = #{size}")
+    public void stockUp(int id, String color, String size, int count);
+
+    //조회수 증가
+    @Update("UPDATE product SET view = view + 1 WHERE id = #{id}")
+    public void viewUp(int id);
+
 }

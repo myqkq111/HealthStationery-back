@@ -207,5 +207,23 @@ public class ProductService {
         productMapper.stockUpdate(id, color, size, count);
     }
 
+    public List<ProductOptionVO> oneOption(int id){
+        return productMapper.oneOption(id);
+    }
 
+    public void saleCountUp(int id){
+        productMapper.saleCountUp(id);
+    }
+
+    public void saleCountDown(int id){
+        productMapper.saleCountDown(id);
+    }
+
+    public void stockUp(int id, String color, String size, int count){
+        productMapper.stockUp(id, color, size, count);
+    }
+
+    public void viewUp(int id){
+        productMapper.viewUp(id);
+    }
 }

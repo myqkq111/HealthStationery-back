@@ -3,10 +3,10 @@ package com.example.finalproject.mapper;
 import com.example.finalproject.vo.BuylistProductVO;
 import com.example.finalproject.vo.BuylistVO;
 import com.example.finalproject.vo.ProductVO;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Options;
-import org.apache.ibatis.annotations.Select;
+import com.example.finalproject.vo.SelectBuylistVO;
+import org.apache.ibatis.annotations.*;
+
+import java.util.List;
 
 @Mapper
 public interface BuylistMapper {
@@ -24,5 +24,19 @@ public interface BuylistMapper {
     @Select("SELECT * FROM buylist WHERE id = #{id}")
     BuylistVO selectSuccess(int id);
 
+    //마이페이지 주문 목록
+    @Select("select b.*, b.member_id as memberId, bp.id as buylistProductId, bp.product_id as productId, bp.color, bp.size, bp.count, p.name as productName, p.price, p.cate, p.image as strImage, p.content from buylist b join buylist_product bp on(b.id = bp.buylist_id) join product p on(p.id = bp.product_id) where b.member_id = #{id}")
+    List<SelectBuylistVO> selectBuylist(int id);
+
+    @Select("select count(*) from buylist_product where buylist_id = #{id}")
+    int selectBuylistCount(int id);
+
+    //구매 내역 취소
+    @Delete("DELETE FROM buylist WHERE id = #{id}")
+    void deleteBuylist(int id);
+
+    //구매 내역 상품 취소
+    @Delete("DELETE FROM buylist_product WHERE buylist_id = #{id} AND product_id = #{pid} AND color = #{color} AND size = #{size}")
+    void deleteBuylistProduct(int id, int pid, String color, String size);
 
 }
