@@ -120,5 +120,24 @@ public class ProductController {
         }
     }
 
+    @GetMapping("/oneOption")
+    public ResponseEntity<?> oneOption(@RequestParam int id) {
+        try {
+            List<ProductOptionVO> list =  productService.oneOption(id);
+            return ResponseEntity.ok(list);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PutMapping("/viewUp")
+    public ResponseEntity<?> viewUp(@RequestParam int id) {
+        try {
+            productService.viewUp(id);
+            return ResponseEntity.ok(1);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
 
 }

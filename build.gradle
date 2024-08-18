@@ -44,6 +44,12 @@ dependencies {
 	implementation 'org.springframework.security:spring-security-oauth2-core'
 	implementation 'org.springframework.security:spring-security-oauth2-jose'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-webflux'
+	implementation 'org.json:json:20210307'
+	implementation 'com.googlecode.json-simple:json-simple:1.1.1'
+
+
 
 	// JWT dependencies
 	implementation 'io.jsonwebtoken:jjwt-api:0.11.2'

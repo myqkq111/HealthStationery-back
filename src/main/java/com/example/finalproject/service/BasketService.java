@@ -43,4 +43,8 @@ public class BasketService {
         basketMapper.buylistAfterDelete(basket);
     }
 
+    public void optionUpdate(BasketVO basket){
+        basketMapper.optionUpdate(basket);
+    }
+
 }

@@ -74,4 +74,13 @@ public class BasketController {
         }
     }
 
+    @PutMapping("/optionUpdate")
+    public ResponseEntity<?> optionUpdate(@RequestBody BasketVO basket) {
+        try {
+            basketService.optionUpdate(basket);
+            return ResponseEntity.ok(1);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
 }
