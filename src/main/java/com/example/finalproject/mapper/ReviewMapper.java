@@ -11,8 +11,8 @@ import java.util.List;
 public interface ReviewMapper {
 
     // 리뷰 작성
-    @Insert("INSERT INTO review(buylist_id, member_id, score, content)" +
-            "VALUES(#{buylistId}, #{memberId}, #{score}, #{content})")
+    @Insert("INSERT INTO review(buylist_id, product_id, score, content)" +
+            "VALUES(#{buylistId}, #{productId}, #{score}, #{content})")
     void insert(ReviewVO reviewVO);
 
     // 리뷰 출력
