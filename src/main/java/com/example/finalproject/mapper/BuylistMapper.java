@@ -39,4 +39,7 @@ public interface BuylistMapper {
     @Delete("DELETE FROM buylist_product WHERE buylist_id = #{id} AND product_id = #{pid} AND color = #{color} AND size = #{size}")
     void deleteBuylistProduct(int id, int pid, String color, String size);
 
+    //구매 확정
+    @Update("UPDATE buylist_product SET confirmation = 1 WHERE id = #{id}")
+    void updateConfirmation(int id);
 }

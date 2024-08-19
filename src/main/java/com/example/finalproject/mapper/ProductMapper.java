@@ -19,8 +19,16 @@ public interface ProductMapper {
     public void insertOption(ProductOptionVO productOptionVO);
 
     //모든 상품 가져오기
-    @Select("SELECT *, image as strImage, content_image as strContentImage FROM product")
+    @Select("SELECT *, image as strImage, content_image as strContentImage FROM product)")
     public List<ProductVO> selectAll();
+
+    //운동장비 모든 상품 가져오기
+    @Select("SELECT *, image as strImage, content_image as strContentImage FROM product WHERE cate NOT IN('tops', 'bottoms', 'other-clothing')")
+    public List<ProductVO> shopAll();
+
+    //의류 모든 상품 가져오기
+    @Select("SELECT *, image as strImage, content_image as strContentImage FROM product WHERE cate IN('tops', 'bottoms', 'other-clothing')")
+    public List<ProductVO> clothingAll();
 
     //모든 옵션 가져오기
     @Select("SELECT *, product_id as productId FROM product_option")
