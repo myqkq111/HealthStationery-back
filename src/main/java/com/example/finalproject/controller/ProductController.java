@@ -8,6 +8,7 @@ import com.example.finalproject.vo.ProductOptionVO;
 import com.example.finalproject.vo.ProductVO;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -131,13 +132,31 @@ public class ProductController {
     }
 
     @PutMapping("/viewUp")
-    public ResponseEntity<?> viewUp(@RequestParam int id) {
+    public ResponseEntity<?> viewUp(@RequestParam int id, HttpSession session) {
         try {
-            productService.viewUp(id);
+            // Log session details
+            String sessionId = session.getId();
+
+            // 세션에 특정 상품에 대한 조회 여부를 저장할 키
+            String viewedKey = "viewed_" + id;
+
+            // 상품 조회 여부를 확인
+            String lastViewedSessionId = (String) session.getAttribute(viewedKey);
+
+            if (lastViewedSessionId == null || !lastViewedSessionId.equals(sessionId)) {
+                System.out.println("상품을 새로운 세션에서 조회하였습니다. 조회수를 증가시킵니다.");
+                productService.viewUp(id);  // 조회수 증가
+                session.setAttribute(viewedKey, sessionId);  // 현재 세션 ID를 저장
+            } else {
+                System.out.println("이미 이 세션에서 조회한 상품입니다. 조회수를 증가시키지 않습니다.");
+            }
+
             return ResponseEntity.ok(1);
         } catch (Exception e) {
+            System.out.println("Error occurred: " + e.getMessage());
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
 
 }
