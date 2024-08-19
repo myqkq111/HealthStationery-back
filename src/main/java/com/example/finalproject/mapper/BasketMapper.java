@@ -35,8 +35,5 @@ public interface BasketMapper {
 
     @Update("UPDATE basket SET color = #{color}, size = #{size}, count = #{count} WHERE id = #{id}")
     void optionUpdate(BasketVO basket);
-
-    // 장바구니 아이템 수 반환
-    @Select("SELECT COUNT(*) FROM basket WHERE member_id = #{memberId}")
-    int getCartItemCount(@Param("memberId") int memberId);
+    
 }
