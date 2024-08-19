@@ -83,4 +83,13 @@ public class BasketController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+    @GetMapping("/item-count")
+    public ResponseEntity<?> getCartItemCount(@RequestParam int id) {
+        try {
+            int count = basketService.getCartItemCount(id);
+            return ResponseEntity.ok(count);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Failed to retrieve cart item count: " + e.getMessage());
+        }
+    }
 }
