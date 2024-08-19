@@ -1,9 +1,7 @@
 package com.example.finalproject.mapper;
 
 import com.example.finalproject.vo.InqVO;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -25,4 +23,12 @@ public interface InqMapper {
     //모든 문의글 보여주기
     @Select("SELECT i.*, i.product_id as productId, i.member_id as memberId, m.name FROM inq i JOIN member m ON(i.member_id = m.id)")
     List<InqVO> selectAdmin();
+
+    @Delete("DELETE FROM inq WHERE id = #{id}")
+    void delete(int id);
+
+    @Update("UPDATE inq " +
+            "SET comment = #{comment} " +
+            "WHERE id = #{id}")
+    void updateComment(InqVO inq);
 }
