@@ -24,4 +24,10 @@ public class InqService {
     public List<InqVO> selectAdmin(){
         return inqMapper.selectAdmin();
     }
+
+    public void deleteInq(int id){ inqMapper.delete(id); }
+
+    public void updateComment(InqVO inq){
+//        System.out.println("서비스 : "+inq);
+        inqMapper.updateComment(inq); }
 }
