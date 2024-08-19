@@ -19,7 +19,7 @@ public interface ProductMapper {
     public void insertOption(ProductOptionVO productOptionVO);
 
     //모든 상품 가져오기
-    @Select("SELECT *, image as strImage, content_image as strContentImage FROM product)")
+    @Select("SELECT *, image as strImage, content_image as strContentImage FROM product")
     public List<ProductVO> selectAll();
 
     //운동장비 모든 상품 가져오기
