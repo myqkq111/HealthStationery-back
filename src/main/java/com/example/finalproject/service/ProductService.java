@@ -65,9 +65,11 @@ public class ProductService {
     public List<ProductVO> selectAll(){
         // 모든 상품을 가져옵니다.
         List<ProductVO> listProduct = productMapper.selectAll();
+        System.out.println(listProduct);
 
         // 모든 상품 옵션을 가져옵니다.
         List<ProductOptionVO> listOptions = productMapper.selectOptionAll();
+        System.out.println(listOptions);
 
         // 상품 ID를 키로, 옵션 목록을 값으로 가지는 맵을 만듭니다.
         Map<Integer, List<ProductOptionVO>> productOptionsMap = new HashMap<>();

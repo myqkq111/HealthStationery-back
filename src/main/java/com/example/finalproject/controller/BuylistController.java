@@ -67,4 +67,14 @@ public class BuylistController {
         }
     }
 
+    @GetMapping("/selectAll")
+    public ResponseEntity<?> selectAll(){
+        try {
+            List<SelectBuylistVO> list = buylistService.selectAll();
+            return ResponseEntity.ok(list);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
 }

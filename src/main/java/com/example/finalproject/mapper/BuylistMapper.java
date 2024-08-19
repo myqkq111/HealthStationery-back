@@ -25,7 +25,7 @@ public interface BuylistMapper {
     BuylistVO selectSuccess(int id);
 
     //마이페이지 주문 목록
-    @Select("select b.*, b.member_id as memberId, bp.id as buylistProductId, bp.product_id as productId, bp.color, bp.size, bp.count, p.name as productName, p.price, p.cate, p.image as strImage, p.content from buylist b join buylist_product bp on(b.id = bp.buylist_id) join product p on(p.id = bp.product_id) where b.member_id = #{id}")
+    @Select("select b.*, b.member_id as memberId, bp.id as buylistProductId, bp.product_id as productId, bp.color, bp.size, bp.count, bp.confirmation, p.name as productName, p.price, p.cate, p.image as strImage, p.content from buylist b join buylist_product bp on(b.id = bp.buylist_id) join product p on(p.id = bp.product_id) where b.member_id = #{id}")
     List<SelectBuylistVO> selectBuylist(int id);
 
     @Select("select count(*) from buylist_product where buylist_id = #{id}")
@@ -42,4 +42,8 @@ public interface BuylistMapper {
     //구매 확정
     @Update("UPDATE buylist_product SET confirmation = 1 WHERE id = #{id}")
     void updateConfirmation(int id);
+
+    //관리자 페이지 모든 주문 보기
+    @Select("select b.*, b.member_id as memberId, bp.id as buylistProductId, bp.product_id as productId, bp.color, bp.size, bp.count, bp.confirmation, p.name as productName, p.price, p.cate, p.image as strImage, p.content, m.name as memberName from buylist b join buylist_product bp on(b.id = bp.buylist_id) join product p on(p.id = bp.product_id) join member m on(b.member_id = m.id)")
+    List<SelectBuylistVO> selectAll();
 }

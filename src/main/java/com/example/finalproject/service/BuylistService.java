@@ -74,4 +74,8 @@ public class BuylistService {
         buylistMapper.updateConfirmation(id);
     }
 
+    public List<SelectBuylistVO> selectAll(){
+        return buylistMapper.selectAll();
+    }
+
 }
