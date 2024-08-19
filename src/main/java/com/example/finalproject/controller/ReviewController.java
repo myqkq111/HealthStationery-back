@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/review")
 public class ReviewController {
@@ -26,9 +28,9 @@ public class ReviewController {
     @GetMapping("/selectReviewByProductId")
     public ResponseEntity<?> selectReviewByProductId(@RequestParam int productId) {
         try{
-            reviewService.selectByProductId(productId);
+            List<ReviewVO> reviewList = reviewService.selectByProductId(productId);
             System.out.println(reviewService.selectByProductId(productId));
-            return ResponseEntity.ok("상품 리뷰를 가져오는데 성공했습니다.");
+            return ResponseEntity.ok(reviewList);
         }catch(Exception e){
             return ResponseEntity.badRequest().body("해당 상품 리뷰를 가져오지 못했습니다. "+e.getMessage());
         }
