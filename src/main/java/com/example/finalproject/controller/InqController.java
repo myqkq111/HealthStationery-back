@@ -35,4 +35,26 @@ public class InqController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<?> deleteInq(@PathVariable int id) {
+        try{
+//            System.out.println(id);
+            inqService.deleteInq(id);
+            return ResponseEntity.ok(1);
+        }catch(Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PutMapping("/comment")
+    public ResponseEntity<?> updateInq(@RequestBody InqVO inq) {
+        try{
+//            System.out.println("컨트롤러 : "+inq);
+            inqService.updateComment(inq);
+            return ResponseEntity.ok(1);
+        }catch(Exception e){
+            return ResponseEntity.badRequest().body("관리자 댓글 추가 에러 : "+e.getMessage());
+        }
+    }
 }
