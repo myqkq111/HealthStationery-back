@@ -35,5 +35,5 @@ public interface BasketMapper {
 
     @Update("UPDATE basket SET color = #{color}, size = #{size}, count = #{count} WHERE id = #{id}")
     void optionUpdate(BasketVO basket);
-
+    
 }

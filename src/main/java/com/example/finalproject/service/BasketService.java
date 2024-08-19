@@ -47,4 +47,10 @@ public class BasketService {
         basketMapper.optionUpdate(basket);
     }
 
+    public int getCartItemCount(int memberId) {
+        // 장바구니의 아이템 수를 계산하는 로직을 구현합니다.
+        // 이 예제에서는 memberId로 장바구니를 조회하고 아이템 수를 반환합니다.
+        List<BasketVO> items = selectByMemberId(memberId); // 예시로 memberId에 따라 아이템 조회
+        return items.size(); // 아이템 수 반환
+    }
 }
