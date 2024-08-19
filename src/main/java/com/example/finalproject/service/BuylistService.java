@@ -70,4 +70,8 @@ public class BuylistService {
         productService.saleCountDown(pid);
     }
 
+    public void updateConfirmation(int id){
+        buylistMapper.updateConfirmation(id);
+    }
+
 }

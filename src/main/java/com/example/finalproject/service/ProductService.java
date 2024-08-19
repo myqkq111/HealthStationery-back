@@ -147,7 +147,15 @@ public class ProductService {
     public List<ProductVO> selectCate(String cate) {
 
         // 카테고리에 맞는 상품을 가져옵니다.
-        List<ProductVO> listProduct = productMapper.selectCate(cate);
+        List<ProductVO> listProduct;
+
+        if(cate.equals("shop")){
+            listProduct = productMapper.shopAll();
+        }  else if(cate.equals("clothing")){
+            listProduct = productMapper.clothingAll();
+        } else {
+            listProduct = productMapper.selectCate(cate);
+        }
 
         // 모든 상품 옵션을 가져옵니다.
         List<ProductOptionVO> listOptions = productMapper.selectOptionAll();

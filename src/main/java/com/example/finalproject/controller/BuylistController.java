@@ -57,5 +57,14 @@ public class BuylistController {
         }
     }
 
+    @PutMapping("/confirmation")
+    public ResponseEntity<?> confirmation(@RequestParam int id){
+        try {
+            buylistService.updateConfirmation(id);
+            return ResponseEntity.ok(1);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
 
 }

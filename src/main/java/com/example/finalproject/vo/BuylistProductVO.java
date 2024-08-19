@@ -11,5 +11,5 @@ public class BuylistProductVO {
     private String color; //상품 컬러
     private String size; //상품 사이즈
     private int count; //구매 개수
-
+    private int confirmation; //구매 확정(1이 확정)
 }

@@ -54,7 +54,7 @@ public class ProductController {
 
 
     @GetMapping("/selectAll")
-    public ResponseEntity<?> selectAll() {
+    public ResponseEntity<?> shopAll() {
         try{
             List<ProductVO> list = productService.selectAll();
             return ResponseEntity.ok(list);
