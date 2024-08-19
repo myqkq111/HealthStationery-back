@@ -20,6 +20,7 @@ public class WishListController {
         try {
             System.out.println(likeVO);
             wishListService.likeTrue(likeVO);
+            wishListService.likeTrue2(likeVO);
             return ResponseEntity.ok(1);
         }catch(Exception e) {
             return ResponseEntity.badRequest().body("찜추가 오류"+e.getMessage());
@@ -29,6 +30,7 @@ public class WishListController {
     public ResponseEntity<?> likeFalse(@RequestBody LikeVO likeVO){
         try{
             wishListService.likeFalse(likeVO);
+            wishListService.likeFalse2(likeVO);
             return ResponseEntity.ok(1);
         }catch (Exception e) {
             return ResponseEntity.badRequest().body("찜해제 오류"+e.getMessage());

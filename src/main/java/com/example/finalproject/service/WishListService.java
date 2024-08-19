@@ -19,12 +19,20 @@ public class WishListService {
     public void likeTrue(LikeVO likeVO){
         wishListMapper.likeTrue(likeVO);
     }
+    public void likeTrue2(LikeVO likeVO){
+        wishListMapper.likeTrue2(likeVO);
+    }
 
     public void likeFalse(LikeVO likeVO){
         wishListMapper.likeFalse(likeVO);
+    }
+    public void likeFalse2(LikeVO likeVO){
+        wishListMapper.likeFalse2(likeVO);
     }
 
     public List<LikeVO> view(int id){
         return wishListMapper.view(id);
     }
+
+    public int totalLikes(int productId) { return wishListMapper.totalLikes(productId); }
 }

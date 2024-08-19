@@ -115,6 +115,7 @@ public class ProductController {
             productDetailsMap.put("inquiries", inqList);
             if(uid != null && wishListService.isLikedMember(id,uid)>=1)
                 product.setLikeToggle(product.getLikeToggle()+1);
+            product.setLike(wishListService.totalLikes(id));
             return ResponseEntity.ok(productDetailsMap);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Failed to retrieve products for the selected category: " + e.getMessage());
