@@ -41,6 +41,11 @@ public class BuylistController {
     public ResponseEntity<?> myPage(@RequestParam int id){
         try {
             List<SelectBuylistVO> list = buylistService.selectBuylist(id);
+            for (SelectBuylistVO item : list) {
+                System.out.println("Buylist Product ID: " + item.getBuylistProductId());
+                System.out.println("Has Review: " + (item.getHasReview() == 1 ? "Yes" : "No"));
+                System.out.println();
+            }
             return ResponseEntity.ok(list);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());

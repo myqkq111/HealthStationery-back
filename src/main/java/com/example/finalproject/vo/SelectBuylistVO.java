@@ -34,4 +34,5 @@ public class SelectBuylistVO {
 
     private String memberName; //아이디 name
 
+    private Integer hasReview; //리뷰작성여부
 }
