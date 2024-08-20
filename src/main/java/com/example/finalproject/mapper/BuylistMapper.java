@@ -26,7 +26,7 @@ public interface BuylistMapper {
 
     //마이페이지 주문 목록
     @Select("SELECT b.*, b.member_id AS memberId, bp.id AS buylistProductId, bp.product_id AS productId, " +
-            "bp.color, bp.size, bp.count, bp.confirmation, p.name AS productName, p.price, p.cate, p.image AS strImage, " +
+            "bp.color, bp.size, bp.count, bp.confirmation, bp.status, p.name AS productName, p.price, p.cate, p.image AS strImage, " +
             "p.content, " +
             "CASE WHEN r.id IS NOT NULL THEN 1 ELSE 0 END AS hasReview " +
             "FROM buylist b " +
@@ -35,7 +35,6 @@ public interface BuylistMapper {
             "LEFT JOIN review r ON r.buylist_product_id = bp.id " +
             "WHERE b.member_id = #{id}")
     List<SelectBuylistVO> selectBuylist(int id);
-
 
     @Select("select count(*) from buylist_product where buylist_id = #{id}")
     int selectBuylistCount(int id);
@@ -53,6 +52,14 @@ public interface BuylistMapper {
     void updateConfirmation(int id);
 
     //관리자 페이지 모든 주문 보기
-    @Select("select b.*, b.member_id as memberId, bp.id as buylistProductId, bp.product_id as productId, bp.color, bp.size, bp.count, bp.confirmation, p.name as productName, p.price, p.cate, p.image as strImage, p.content, m.name as memberName from buylist b join buylist_product bp on(b.id = bp.buylist_id) join product p on(p.id = bp.product_id) join member m on(b.member_id = m.id)")
+    @Select("select b.*, b.member_id as memberId, bp.id as buylistProductId, bp.product_id as productId, bp.color, bp.size, bp.count, bp.confirmation, bp.status, p.name as productName, p.price, p.cate, p.image as strImage, p.content, m.name as memberName from buylist b join buylist_product bp on(b.id = bp.buylist_id) join product p on(p.id = bp.product_id) join member m on(b.member_id = m.id)")
     List<SelectBuylistVO> selectAll();
+
+    //5분마다 상태 자동 업데이트
+    @Update("UPDATE buylist_product SET status = '배송중' WHERE status = '상품 준비중'")
+    void updateProductStatusToShipping();
+
+    //10분마다 상태 자동 업데이트
+    @Update("UPDATE buylist_product SET status = '배송완료' WHERE status = '배송중'")
+    void updateProductStatusToDelivered();
 }

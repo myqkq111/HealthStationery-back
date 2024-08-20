@@ -6,6 +6,7 @@ import com.example.finalproject.vo.BuylistVO;
 import com.example.finalproject.vo.ProductVO;
 import com.example.finalproject.vo.SelectBuylistVO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -76,6 +77,20 @@ public class BuylistService {
 
     public List<SelectBuylistVO> selectAll(){
         return buylistMapper.selectAll();
+    }
+
+    // 5분마다 "상품 준비중" 상태를 "배송중"으로 업데이트
+    @Scheduled(fixedRate = 300000, initialDelay = 600000)
+    public void updateStatusToShipping() {
+        System.out.println("배송중으로 바뀜");
+        buylistMapper.updateProductStatusToShipping();
+    }
+
+    // 10분마다 "배송중" 상태를 "배송완료"로 업데이트
+    @Scheduled(fixedRate = 600000, initialDelay = 1200000)
+    public void updateStatusToDelivered() {
+        System.out.println("배송완료로 바뀜");
+        buylistMapper.updateProductStatusToDelivered();
     }
 
 }
