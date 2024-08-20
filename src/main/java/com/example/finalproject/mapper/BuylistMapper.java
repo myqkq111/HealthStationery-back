@@ -25,7 +25,15 @@ public interface BuylistMapper {
     BuylistVO selectSuccess(int id);
 
     //마이페이지 주문 목록
-    @Select("select b.*, b.member_id as memberId, bp.id as buylistProductId, bp.product_id as productId, bp.color, bp.size, bp.count, bp.confirmation, bp.status, p.name as productName, p.price, p.cate, p.image as strImage, p.content from buylist b join buylist_product bp on(b.id = bp.buylist_id) join product p on(p.id = bp.product_id) where b.member_id = #{id}")
+    @Select("SELECT b.*, b.member_id AS memberId, bp.id AS buylistProductId, bp.product_id AS productId, " +
+            "bp.color, bp.size, bp.count, bp.confirmation, bp.status, p.name AS productName, p.price, p.cate, p.image AS strImage, " +
+            "p.content, " +
+            "CASE WHEN r.id IS NOT NULL THEN 1 ELSE 0 END AS hasReview " +
+            "FROM buylist b " +
+            "JOIN buylist_product bp ON (b.id = bp.buylist_id) " +
+            "JOIN product p ON (p.id = bp.product_id) " +
+            "LEFT JOIN review r ON r.buylist_product_id = bp.id " +
+            "WHERE b.member_id = #{id}")
     List<SelectBuylistVO> selectBuylist(int id);
 
     @Select("select count(*) from buylist_product where buylist_id = #{id}")
