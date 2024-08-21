@@ -29,20 +29,20 @@ public class ChatMessageService {
         return chatMessageRepository.save(message);
     }
 
-    public ChatMessage saveAdminMessage(int memberId, String name, String content, int sns) {
+    public ChatMessage saveAdminMessage(int memberId, String name, String content, int sns, int transmitMemberId) {
         ChatMessage message = new ChatMessage();
-        message.setMemberId(11);
+        message.setMemberId(memberId);
         message.setName(name);
         message.setContent(content);
         message.setSns(sns);
         message.setTimestamp(LocalDateTime.now());
-        message.setTransmitMemberId(memberId);
+        message.setTransmitMemberId(transmitMemberId);
         return chatMessageRepository.save(message);
     }
 
     public List<ChatMessage> getChatHistory(int memberId) {
         List<ChatMessage> sentMessages = chatMessageRepository.findBySnsAndMemberId(0, memberId);
-        List<ChatMessage> receivedMessages = chatMessageRepository.findByMemberIdAndSns(memberId, 1);
+        List<ChatMessage> receivedMessages = chatMessageRepository.findBySnsOrTransmitMemberId(1, memberId);
 
         sentMessages.addAll(receivedMessages);
 
@@ -72,5 +72,9 @@ public class ChatMessageService {
         });
 
         return sentMessages;
+    }
+
+    public List<ChatMessage> getAllMessages() {
+        return chatMessageRepository.findAll(); // 모든 메시지를 가져오는 메소드
     }
 }
