@@ -29,9 +29,28 @@ public class ChatController {
                 String.valueOf(chatMessage.getMemberId()), "/queue/messages", chatMessage);
     }
 
+    @MessageMapping("/sendAdminMessage")
+    public void sendAdminMessage(@Payload ChatMessage chatMessage) {
+        chatMessageService.saveAdminMessage(chatMessage.getMemberId(), chatMessage.getName(), chatMessage.getContent(), chatMessage.getSns(), chatMessage.getTransmitMemberId());
+        messagingTemplate.convertAndSendToUser(
+                String.valueOf(chatMessage.getMemberId()), "/queue/messages", chatMessage);
+    }
+
     @GetMapping("/history")
     public List<ChatMessage> getChatHistory(@RequestParam int memberId) {
         System.out.println(chatMessageService.getChatHistory(memberId));
         return chatMessageService.getChatHistory(memberId);
+    }
+
+    @GetMapping("/historyAdmin")
+    public List<ChatMessage> getChatHistoryAdmin(@RequestParam int memberId) {
+        System.out.println(chatMessageService.getAdminChatHistory(memberId));
+        return chatMessageService.getAdminChatHistory(memberId);
+    }
+
+    @GetMapping("/rooms")
+    public List<ChatMessage> getChatRooms() {
+        // 모든 채팅 메시지를 가져와서 반환
+        return chatMessageService.getAllMessages();
     }
 }
