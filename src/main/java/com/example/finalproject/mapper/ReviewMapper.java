@@ -24,7 +24,7 @@ public interface ReviewMapper {
     public List<ReviewVO> selectByProductId(int productId);
 
     // 모든 리뷰 출력
-    @Select("SELECT image as strImage, color, size, score, r.content as content, b.name as name, p.name as productName " +
+    @Select("SELECT image as strImage, color, size, score, r.content as content, b.name as name, p.name as productName, cate " +
             "FROM review r " +
             "JOIN buylist_product bp ON buylist_product_id = bp.id " +
             "JOIN buylist b ON b.id = bp.buylist_id " +

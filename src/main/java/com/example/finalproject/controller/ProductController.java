@@ -159,5 +159,31 @@ public class ProductController {
         }
     }
 
-
+    @GetMapping("/liketop10")
+    public ResponseEntity<?> liketop10() {
+        try {
+            List<ProductVO> list =  productService.selectTop10ProductsByLikes();
+            return ResponseEntity.ok(list);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("좋아요순 상품을 가져오지 못했습니다: " + e.getMessage());
+        }
+    }
+    @GetMapping("/viewtop10")
+    public ResponseEntity<?> viewtop10() {
+        try {
+            List<ProductVO> list =  productService.selectTop10ProductsByView();
+            return ResponseEntity.ok(list);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("조회수순 상품을 가져오지 못했습니다: " + e.getMessage());
+        }
+    }
+    @GetMapping("/purchasetop10")
+    public ResponseEntity<?> purchasetop10() {
+        try {
+            List<ProductVO> list =  productService.selectTop10ProductsByPurchase();
+            return ResponseEntity.ok(list);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("구매순 상품을 가져오지 못했습니다: " + e.getMessage());
+        }
+    }
 }
