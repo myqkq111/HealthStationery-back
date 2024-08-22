@@ -25,11 +25,10 @@ public class ReviewController {
         }
     }
 
-    @GetMapping("/selectReviewByProductId")
-    public ResponseEntity<?> selectReviewByProductId(@RequestParam int productId) {
+    @GetMapping("/product")
+    public ResponseEntity<?> selectReviewByProductId(@RequestParam(required = false) Integer productId) {
         try{
             List<ReviewVO> reviewList = reviewService.selectByProductId(productId);
-            System.out.println(reviewService.selectByProductId(productId));
             return ResponseEntity.ok(reviewList);
         }catch(Exception e){
             return ResponseEntity.badRequest().body("해당 상품 리뷰를 가져오지 못했습니다. "+e.getMessage());
