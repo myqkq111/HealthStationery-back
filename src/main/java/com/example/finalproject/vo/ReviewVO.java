@@ -16,4 +16,5 @@ public class ReviewVO {
 
     private String name;
     private String productName;
+    private String cate; //카테고리
 }

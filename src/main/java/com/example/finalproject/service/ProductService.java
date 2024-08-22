@@ -236,4 +236,11 @@ public class ProductService {
     public void viewUp(int id){
         productMapper.viewUp(id);
     }
+
+    // 찜 순위 TOP 10
+    public List<ProductVO> selectTop10ProductsByLikes() { return productMapper.selectTop10ProductsByLikes(); }
+    // 조회수 순위 TOP 10
+    public List<ProductVO> selectTop10ProductsByView() { return productMapper.selectTop10ProductsByView(); }
+    // 구매 순위 TOP 10
+    public List<ProductVO> selectTop10ProductsByPurchase() { return productMapper.selectTop10ProductsByPurchase(); }
 }
