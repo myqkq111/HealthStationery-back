@@ -16,7 +16,7 @@ public interface ReviewMapper {
     void insert(ReviewVO reviewVO);
 
     // 리뷰 출력
-    @Select("SELECT content, score, name " +
+    @Select("SELECT color, size, score, content, name " +
             "FROM review r " +
             "JOIN buylist_product bp ON buylist_product_id = bp.id " +
             "JOIN buylist b ON b.id = bp.buylist_id " +
