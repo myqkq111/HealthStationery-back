@@ -16,7 +16,11 @@ public class ReviewService {
         reviewMapper.insert(reviewVO);
     }
 
-    public List<ReviewVO> selectByProductId(int productId){
-        return reviewMapper.selectByProductId(productId);
+    public List<ReviewVO> selectByProductId(Integer productId){
+        if (productId != null)
+            return reviewMapper.selectByProductId(productId);
+         else {
+            return reviewMapper.selectAllReviews();
+        }
     }
 }
