@@ -5,9 +5,8 @@ import com.example.finalproject.repository.ChatMessageRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ChatMessageService {
@@ -25,7 +24,7 @@ public class ChatMessageService {
         message.setContent(content);
         message.setSns(sns);
         message.setTimestamp(LocalDateTime.now());
-        message.setTransmitMemberId(11);
+        message.setTransmitMemberId(11); // 기본값 설정, 실제 사용 시 동적으로 처리 필요
         return chatMessageRepository.save(message);
     }
 
@@ -47,14 +46,9 @@ public class ChatMessageService {
         sentMessages.addAll(receivedMessages);
 
         // timestamp 기준으로 정렬
-        Collections.sort(sentMessages, new Comparator<ChatMessage>() {
-            @Override
-            public int compare(ChatMessage msg1, ChatMessage msg2) {
-                return msg1.getTimestamp().compareTo(msg2.getTimestamp());
-            }
-        });
-
-        return sentMessages;
+        return sentMessages.stream()
+                .sorted((m1, m2) -> m1.getTimestamp().compareTo(m2.getTimestamp()))
+                .collect(Collectors.toList());
     }
 
     public List<ChatMessage> getAdminChatHistory(int memberId) {
@@ -64,14 +58,9 @@ public class ChatMessageService {
         sentMessages.addAll(receivedMessages);
 
         // timestamp 기준으로 정렬
-        Collections.sort(sentMessages, new Comparator<ChatMessage>() {
-            @Override
-            public int compare(ChatMessage msg1, ChatMessage msg2) {
-                return msg1.getTimestamp().compareTo(msg2.getTimestamp());
-            }
-        });
-
-        return sentMessages;
+        return sentMessages.stream()
+                .sorted((m1, m2) -> m1.getTimestamp().compareTo(m2.getTimestamp()))
+                .collect(Collectors.toList());
     }
 
     public List<ChatMessage> getAllMessages() {
