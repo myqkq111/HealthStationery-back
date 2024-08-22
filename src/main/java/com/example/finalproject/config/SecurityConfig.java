@@ -65,6 +65,7 @@ public class SecurityConfig{
 //                                .requestMatchers("/product/**").authenticated()
 //                                .requestMatchers("/member/confirmPassword").authenticated()
                                 .requestMatchers("/member/deleteAccount").authenticated()
+                                .requestMatchers("/ws/**").permitAll()
                                 .anyRequest().permitAll() // 나머지 모든 요청은 접근 허용
 //                                .anyRequest().authenticated()
                 )
