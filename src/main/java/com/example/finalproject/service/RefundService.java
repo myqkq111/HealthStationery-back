@@ -79,18 +79,21 @@ public class RefundService {
             JSONParser parser = new JSONParser();
             JSONObject jsonResponse = (JSONObject) parser.parse(responseBody);
             JSONObject response = (JSONObject) jsonResponse.get("response");
-            return (String) response.get("access_token");
+            if (response != null) {
+                return (String) response.get("access_token");
+            } else {
+                throw new RuntimeException("Access Token이 응답에 없습니다.");
+            }
         } catch (ParseException e) {
             throw new RuntimeException("Access Token 추출 중 오류가 발생했습니다.", e);
         }
     }
 
     private String paymentInfo(String impUid, String accessToken) throws IOException, ParseException {
-        HttpURLConnection conn = null;
         URL url = new URL("https://api.iamport.kr/payments/" + impUid);
-        conn = (HttpURLConnection) url.openConnection();
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod("GET");
-        conn.setRequestProperty("Authorization", accessToken); // Bearer token
+        conn.setRequestProperty("Authorization", "Bearer " + accessToken);
         conn.setDoOutput(false);
 
         try (BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream(), "utf-8"))) {
@@ -101,7 +104,7 @@ public class RefundService {
             if (responseData != null) {
                 return responseData.toJSONString(); // JSON 응답 반환
             } else {
-                throw new RuntimeException("Response is null.");
+                throw new RuntimeException("결제 정보 응답이 null입니다.");
             }
         } catch (IOException e) {
             throw new IOException("API 요청 중 오류가 발생했습니다.", e);
@@ -127,8 +130,7 @@ public class RefundService {
 
             return totalAmount - totalRefunded;
         } else {
-            throw new RuntimeException("Response data is null.");
+            throw new RuntimeException("결제 정보가 응답에 없습니다.");
         }
     }
-
 }
