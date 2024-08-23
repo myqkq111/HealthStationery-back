@@ -78,4 +78,21 @@ public interface ProductMapper {
     @Update("UPDATE product SET view = view + 1 WHERE id = #{id}")
     public void viewUp(int id);
 
+    // 찜 순위 TOP 10
+    @Select("SELECT cate, name, price, `like`, strImage " +
+            "FROM product " +
+            "ORDER BY like_count DESC LIMIT 10")
+    public List<ProductVO> selectTop10ProductsByLikes();
+
+    // 조회수 순위 TOP 10
+    @Select("SELECT cate, name, price, `like`, strImage " +
+            "FROM product " +
+            "ORDER BY `view` DESC LIMIT 10")
+    public List<ProductVO> selectTop10ProductsByView();
+
+    // 구매 순위 TOP 10
+    @Select("SELECT cate, name, price, `like`, strImage " +
+            "FROM product " +
+            "ORDER BY sale_count DESC LIMIT 10")
+    public List<ProductVO> selectTop10ProductsByPurchase();
 }
