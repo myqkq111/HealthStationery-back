@@ -5,6 +5,7 @@ import com.example.finalproject.service.MemberService;
 import com.example.finalproject.vo.AuthResponseVO;
 import com.example.finalproject.vo.ErrorResponseVO;
 import com.example.finalproject.vo.MemberVO;
+import com.example.finalproject.vo.ProductOptionVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +19,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -159,4 +161,15 @@ public class MemberController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
+    @GetMapping("/findByTell")
+    public ResponseEntity<?> findByTell(@RequestParam String tell) {
+        try{
+            List<MemberVO> list = memberService.findByTell(tell);
+            return ResponseEntity.ok(list);
+        }catch(Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
 }

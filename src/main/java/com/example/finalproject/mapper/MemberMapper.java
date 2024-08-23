@@ -3,6 +3,8 @@ package com.example.finalproject.mapper;
 import com.example.finalproject.vo.MemberVO;
 import org.apache.ibatis.annotations.*;
 
+import java.util.List;
+
 @Mapper
 public interface MemberMapper {
     // 회원가입
@@ -31,4 +33,8 @@ public interface MemberMapper {
     // 비밀번호 변경
     @Update("UPDATE member SET password = #{password} WHERE id = #{id}")
     void updatePassword(MemberVO member);
+
+    //이메일 찾기
+    @Select("SELECT cate,email FROM member WHERE tell = #{tell}")
+    List<MemberVO> findByTell(String tell);
 }
