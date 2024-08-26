@@ -95,4 +95,10 @@ public interface ProductMapper {
             "FROM product " +
             "ORDER BY sale_count DESC LIMIT 10")
     public List<ProductVO> selectTop10ProductsByPurchase();
+
+    // 상품 검색
+    @Select("SELECT cate, name, price, `like`, image as strImage " +
+            "FROM product " +
+            "WHERE `name` LIKE CONCAT('%', #{keyword}, '%')")
+    public List<ProductVO> searchProductByName(String keyword);
 }

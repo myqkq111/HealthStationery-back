@@ -245,4 +245,7 @@ public class ProductService {
     public List<ProductVO> selectTop10ProductsByView() { return productMapper.selectTop10ProductsByView(); }
     // 구매 순위 TOP 10
     public List<ProductVO> selectTop10ProductsByPurchase() { return productMapper.selectTop10ProductsByPurchase(); }
+
+    // 상품 검색
+    public List<ProductVO> searchProductByName(String keyword) { return productMapper.searchProductByName(keyword); }
 }
