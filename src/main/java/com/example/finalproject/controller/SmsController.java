@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RestController
 @RequestMapping("/sms")
 public class SmsController {
@@ -23,8 +25,11 @@ public class SmsController {
     }
 
     @PostMapping("/verifyCode")
-    public ResponseEntity<String> verifyCode(@RequestParam String phoneNumber, @RequestParam String code) {
-        boolean isValid = smsService.verifyCode("01075310153", code);
+    public ResponseEntity<String> verifyCode(@RequestBody Map<String, String> requestBody) {
+        String phoneNumber = requestBody.get("phoneNumber");
+        String code = requestBody.get("code");
+
+        boolean isValid = smsService.verifyCode(phoneNumber, code);
         if (isValid) {
             return ResponseEntity.ok("Code verified successfully!");
         } else {

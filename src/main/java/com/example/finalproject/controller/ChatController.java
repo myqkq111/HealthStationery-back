@@ -8,6 +8,7 @@ import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -24,6 +25,7 @@ public class ChatController {
 
     @MessageMapping("/sendMessage")
     public void sendMessage(@Payload ChatMessage chatMessage) {
+        chatMessage.setTimestamp(LocalDateTime.now());
         // 사용자 ID와 경로가 정확한지 확인
         messagingTemplate.convertAndSend("/topic/admin/"+"11", chatMessage);
         chatMessageService.saveMessage(chatMessage.getMemberId(), chatMessage.getName(), chatMessage.getContent(), chatMessage.getSns());
@@ -32,8 +34,10 @@ public class ChatController {
 
     @MessageMapping("/sendAdminMessage")
     public void sendAdminMessage(@Payload ChatMessage chatMessage) {
+        chatMessage.setTimestamp(LocalDateTime.now());
         messagingTemplate.convertAndSend("/topic/admin/"+chatMessage.getTransmitMemberId(), chatMessage);
         chatMessageService.saveAdminMessage(chatMessage.getMemberId(), chatMessage.getName(), chatMessage.getContent(), chatMessage.getSns(), chatMessage.getTransmitMemberId());
+        System.out.println(chatMessage);
     }
 
     @GetMapping("/history")

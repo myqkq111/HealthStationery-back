@@ -238,7 +238,9 @@ public class ProductService {
     }
 
     // 찜 순위 TOP 10
-    public List<ProductVO> selectTop10ProductsByLikes() { return productMapper.selectTop10ProductsByLikes(); }
+    public List<ProductVO> selectTop10ProductsByLikes() {
+        System.out.println(productMapper.selectTop10ProductsByLikes());
+        return productMapper.selectTop10ProductsByLikes(); }
     // 조회수 순위 TOP 10
     public List<ProductVO> selectTop10ProductsByView() { return productMapper.selectTop10ProductsByView(); }
     // 구매 순위 TOP 10
