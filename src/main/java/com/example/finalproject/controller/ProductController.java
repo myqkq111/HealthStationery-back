@@ -186,4 +186,14 @@ public class ProductController {
             return ResponseEntity.badRequest().body("구매순 상품을 가져오지 못했습니다: " + e.getMessage());
         }
     }
+
+    @GetMapping("/search")
+    public ResponseEntity<?> searchProduct(@RequestParam String keyword) {
+        try{
+            List<ProductVO> list = productService.searchProductByName(keyword);
+            return ResponseEntity.ok(list);
+        }catch (Exception e){
+            return ResponseEntity.badRequest().body("상품 검색 실패 : " + e.getMessage());
+        }
+    }
 }

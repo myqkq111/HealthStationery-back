@@ -79,20 +79,26 @@ public interface ProductMapper {
     public void viewUp(int id);
 
     // 찜 순위 TOP 10
-    @Select("SELECT cate, name, price, `like`, strImage " +
+    @Select("SELECT cate, name, price, `like`, image as strImage " +
             "FROM product " +
-            "ORDER BY like_count DESC LIMIT 10")
+            "ORDER BY `like` DESC LIMIT 10")
     public List<ProductVO> selectTop10ProductsByLikes();
 
     // 조회수 순위 TOP 10
-    @Select("SELECT cate, name, price, `like`, strImage " +
+    @Select("SELECT cate, name, price, `like`, image as strImage " +
             "FROM product " +
             "ORDER BY `view` DESC LIMIT 10")
     public List<ProductVO> selectTop10ProductsByView();
 
     // 구매 순위 TOP 10
-    @Select("SELECT cate, name, price, `like`, strImage " +
+    @Select("SELECT cate, name, price, `like`, image as strImage " +
             "FROM product " +
             "ORDER BY sale_count DESC LIMIT 10")
     public List<ProductVO> selectTop10ProductsByPurchase();
+
+    // 상품 검색
+    @Select("SELECT cate, name, price, `like`, image as strImage " +
+            "FROM product " +
+            "WHERE `name` LIKE CONCAT('%', #{keyword}, '%')")
+    public List<ProductVO> searchProductByName(String keyword);
 }
