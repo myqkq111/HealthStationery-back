@@ -35,6 +35,14 @@ public interface MemberMapper {
     void updatePassword(MemberVO member);
 
     //이메일 찾기
-    @Select("SELECT cate,email FROM member WHERE tell = #{tell}")
+    @Select("SELECT id,cate,email FROM member WHERE tell = #{tell}")
     List<MemberVO> findByTell(String tell);
+
+    //비밀번호 변경
+    @Update("UPDATE member SET password = #{password} WHERE id = #{id}")
+    void passwordChange(MemberVO member);
+
+    //이메일과 핸드폰번호를 가진 member가 있는지 확인
+    @Select("SELECT * FROM member WHERE email = #{email} AND tell = #{tell} AND cate = 'home'")
+    MemberVO findByEmailAndTell(String email, String tell);
 }
