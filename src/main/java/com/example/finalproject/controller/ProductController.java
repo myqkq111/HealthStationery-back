@@ -162,8 +162,6 @@ public class ProductController {
     @GetMapping("/liketop10")
     public ResponseEntity<?> liketop10() {
         try {
-            System.out.println("하이");
-
             List<ProductVO> list =  productService.selectTop10ProductsByLikes();
             return ResponseEntity.ok(list);
         } catch (Exception e) {
