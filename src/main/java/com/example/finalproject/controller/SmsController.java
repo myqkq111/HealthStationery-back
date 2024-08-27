@@ -1,6 +1,8 @@
 package com.example.finalproject.controller;
 
 import com.example.finalproject.service.SmsServiceImpl;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,10 +20,18 @@ public class SmsController {
 
     @PostMapping("/send")
     public String sendVerificationCode(@RequestBody String phoneNumber) {
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            JsonNode jsonNode = objectMapper.readTree(phoneNumber);
+            String phoneNumberJson = jsonNode.get("phoneNumber").asText(); // JSON에서 phoneNumber 값 추출
 
-        System.out.println(phoneNumber);
-        smsService.sendSms("01075310153");
-        return "Verification code sent!";
+            System.out.println(phoneNumberJson);
+            smsService.sendSms(phoneNumberJson);
+            return "Verification code sent!";
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "Error sending verification code.";
+        }
     }
 
     @PostMapping("/verifyCode")

@@ -172,4 +172,24 @@ public class MemberController {
         }
     }
 
+    @PostMapping("/passwordChange")
+    public ResponseEntity<?> passwordChange(@RequestBody MemberVO member) {
+        try{
+            memberService.passwordChange(member);
+            return ResponseEntity.ok(1);
+        }catch(Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/emailAndTell")
+    public ResponseEntity<?> emailAndTell(@RequestParam String email, @RequestParam String tell) {
+        try{
+            MemberVO member = memberService.findByEmailAndTell(email, tell);
+            return ResponseEntity.ok(member);
+        }catch(Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
 }

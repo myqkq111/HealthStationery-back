@@ -54,4 +54,14 @@ public class MemberService {
     public List<MemberVO> findByTell(String tell){
         return memberMapper.findByTell(tell);
     }
+
+    public void passwordChange(MemberVO member){
+        String encodedPassword = passwordEncoder.encode(member.getPassword());
+        member.setPassword(encodedPassword);
+        memberMapper.updatePassword(member);
+    }
+
+    public MemberVO findByEmailAndTell(String email, String tell){
+        return memberMapper.findByEmailAndTell(email,tell);
+    }
 }
