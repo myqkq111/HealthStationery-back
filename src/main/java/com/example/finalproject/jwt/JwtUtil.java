@@ -18,7 +18,7 @@ public class JwtUtil {
 //    private Key SECRET_KEY = Keys.secretKeyFor(SignatureAlgorithm.HS256);
 
     // 고정된 비밀 키 (Base64 인코딩된 문자열)
-    private static final String SECRET_KEY_BASE64 = "your-base64-encoded-secret-key";
+    private static final String SECRET_KEY_BASE64 = "yourbase64encodedsecretkey";
 
     // 고정된 Key 객체 생성
     private static final Key SECRET_KEY = Keys.hmacShaKeyFor(Base64.getDecoder().decode(SECRET_KEY_BASE64));
