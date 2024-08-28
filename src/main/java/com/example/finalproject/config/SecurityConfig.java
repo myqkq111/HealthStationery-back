@@ -105,6 +105,7 @@ public class SecurityConfig{
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000")); // React 애플리케이션 주소
         configuration.setAllowedOrigins(Arrays.asList("http://kitri-final-project-front.s3-website.ap-northeast-2.amazonaws.com")); // React 애플리케이션 주소
+        configuration.setAllowedOrigins(Arrays.asList("http://ELB777-314057791.ap-northeast-2.elb.amazonaws.com"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
         configuration.setAllowedHeaders(Arrays.asList("*"));
         configuration.setAllowCredentials(true);
