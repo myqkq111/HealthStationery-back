@@ -15,12 +15,10 @@ import java.util.function.Function;
 
 @Component
 public class JwtUtil {
-//    private Key SECRET_KEY = Keys.secretKeyFor(SignatureAlgorithm.HS256);
-
     // 고정된 비밀 키 (Base64 인코딩된 문자열)
-    private static final String SECRET_KEY_BASE64 = "yourbase64encodedsecretkey";
+    private static final String SECRET_KEY_BASE64 = "mybase64encodedsecretkey";
 
-    // 고정된 Key 객체 생성
+    // Base64로 인코딩된 비밀 키를 디코딩하여 Key 객체로 변환
     private static final Key SECRET_KEY = Keys.hmacShaKeyFor(Base64.getDecoder().decode(SECRET_KEY_BASE64));
 
     public String extractUsername(String token) {
@@ -59,7 +57,7 @@ public class JwtUtil {
                 .setSubject(subject)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10))
-                .signWith(SECRET_KEY)
+                .signWith(SECRET_KEY, SignatureAlgorithm.HS256)  // SignatureAlgorithm.HS256 사용
                 .compact();
     }
 
