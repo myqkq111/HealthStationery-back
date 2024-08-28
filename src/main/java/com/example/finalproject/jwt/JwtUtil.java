@@ -15,8 +15,8 @@ import java.util.function.Function;
 
 @Component
 public class JwtUtil {
-    // 고정된 비밀 키 (Base64 인코딩된 문자열)
-    private static final String SECRET_KEY_BASE64 = "mybase64encodedsecretkey";
+//    private Key SECRET_KEY = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+    private static final String SECRET_KEY_BASE64 = "CHLWNSTJQOTJDGHDLALSDNRDLAUDWNSCHLWNSTJQOTJDGHDLALSDNRDLAUDWNS";
 
     // Base64로 인코딩된 비밀 키를 디코딩하여 Key 객체로 변환
     private static final Key SECRET_KEY = Keys.hmacShaKeyFor(Base64.getDecoder().decode(SECRET_KEY_BASE64));
@@ -57,7 +57,7 @@ public class JwtUtil {
                 .setSubject(subject)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10))
-                .signWith(SECRET_KEY, SignatureAlgorithm.HS256)  // SignatureAlgorithm.HS256 사용
+                .signWith(SECRET_KEY)
                 .compact();
     }
 
