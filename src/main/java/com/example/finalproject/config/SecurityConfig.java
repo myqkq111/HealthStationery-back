@@ -149,7 +149,7 @@ public class SecurityConfig{
                     String name = ((Map<String, String>)attributes.get("properties")).get("nickname");
                     String encodedEmail = URLEncoder.encode(email, StandardCharsets.UTF_8.toString());
                     String encodedName = URLEncoder.encode(name, StandardCharsets.UTF_8.toString());
-                    targetUrl = "http://localhost:3000/oauth?cate=kakao&email=" + encodedEmail + "&name=" + encodedName;
+                    targetUrl = "http://kitri-final-project-front.s3-website.ap-northeast-2.amazonaws.com/oauth?cate=kakao&email=" + encodedEmail + "&name=" + encodedName;
 
                 } else if ("naver".equals(registrationId)) {
                     Object user = attributes.get("response");
@@ -160,19 +160,19 @@ public class SecurityConfig{
                             String name = userMap.get("name");
                             String encodedEmail = URLEncoder.encode(email, StandardCharsets.UTF_8.toString());
                             String encodedName = URLEncoder.encode(name, StandardCharsets.UTF_8.toString());
-                            targetUrl = "http://localhost:3000/oauth?cate=naver&email=" + encodedEmail + "&name=" + encodedName;
+                            targetUrl = "http://kitri-final-project-front.s3-website.ap-northeast-2.amazonaws.com/oauth?cate=naver&email=" + encodedEmail + "&name=" + encodedName;
                         } catch (UnsupportedEncodingException e) {
 //                        // 인코딩 실패 시 예외 처리
 //                        e.printStackTrace();
 //                        redirectUrl = "http://localhost:3000/terms";
-                    }
+                        }
                     }
                 } else if ("google".equals(registrationId)) {
                     String email = (String)attributes.get("email");
                     String name = (String)attributes.get("name");
                     String encodedEmail = URLEncoder.encode(email, StandardCharsets.UTF_8.toString());
                     String encodedName = URLEncoder.encode(name, StandardCharsets.UTF_8.toString());
-                    targetUrl = "http://localhost:3000/oauth?cate=google&email=" + encodedEmail + "&name=" + encodedName;
+                    targetUrl = "http://kitri-final-project-front.s3-website.ap-northeast-2.amazonaws.com/oauth?cate=google&email=" + encodedEmail + "&name=" + encodedName;
                 }
                 // 클라이언트 애플리케이션으로 리디렉션합니다.
                 response.sendRedirect(targetUrl);
